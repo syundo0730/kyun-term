@@ -4,6 +4,23 @@ export function serialPortState(state = initialTimeState, action) {
   console.log('serialPortState reducer called with state ', state , ' and action ', action);
 
   switch (action.type) {
+    case 'LIST_REQUEST':
+      return {
+        ...state,
+        frozen: true
+      }
+    case 'LIST_SUCCESS':
+      return {
+        ...state,
+        ports: action.result.ports,
+        frozen: false
+      }
+    case 'LIST_FAILURE':
+      return {
+        ...state,
+        ports: action.error.ports,
+        frozen: false
+      }
     case 'OPEN_PORT_REQUEST':
       return {
         ...state,

@@ -1,6 +1,39 @@
 import Promise from 'bluebird'
-const SerialPort = window.require("remote").require("serialport").SerialPort
-var serialPort = null
+const serialport = window.require("remote").require("serialport")
+const SerialPort = serialport.SerialPort
+var port = null
+
+export function list() {
+  return {
+    types: ['LIST_REQUEST', 'LIST_SUCCESS', 'LIST_FAILURE'],
+    promise: () => {
+      return new Promise((resolve, reject) => {
+        try {
+          serialport.list(function(error, ports) {
+            if (error) {
+              reject({
+                ports: [],
+                status: error
+              });
+            } else if (ports) {
+              resolve({
+                ports
+              })
+            } else {
+              reject({
+                ports: []
+              })
+            }
+          })
+        } catch(error) {
+          reject({
+            ports: []
+          })
+        }
+      })
+    }
+  }
+}
 
 export function open(portName, baudrate) {
   return function(dispatch) {
@@ -9,10 +42,10 @@ export function open(portName, baudrate) {
       portName,
       baudrate
     })
-    serialPort = new SerialPort(portName, {
+    port = new SerialPort(portName, {
       baudrate
     }, false);
-    serialPort.open(function(error) {
+    port.open(function(error) {
       if (error) {
         dispatch({
           type: 'OPEN_PORT_FAILURE',
@@ -30,7 +63,7 @@ export function open(portName, baudrate) {
         dispatch({
           type: 'READ_REQUEST'
         })
-        serialPort.on('data', function(data) {
+        port.on('data', function(data) {
           dispatch({
             type: 'READ_SUCCESS',
             result: {
@@ -50,7 +83,7 @@ export function send(data) {
     promise: () => {
       return new Promise((resolve, reject) => {
         try {
-          serialPort.write(data, function(error, results) {
+          port.write(data, function(error, results) {
             if (error) {
               reject({
                 status: error
