@@ -6,16 +6,16 @@ export default function promiseMiddleware() {
       return next(action)
     }
 
-    const [REQUEST, SUCCESS, FAILURE] = types
+    const [PENDING, FULFILLED, REJECTED] = types
 
-    next({...rest, type: REQUEST})
+    next({...rest, type: PENDING})
 
     return promise().then(
       (result) => {
-        next({...rest, result, type: SUCCESS})
+        next({...rest, result, type: FULFILLED})
       },
       (error) => {
-        next({...rest, error, type: FAILURE})
+        next({...rest, error, type: REJECTED})
       }
     )
   }

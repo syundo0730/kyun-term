@@ -1,7 +1,7 @@
 var initialTimeState = {}
 
-export function _time(state = initialTimeState, action) {
-  console.log('_time reducer called with state ', state , ' and action ', action);
+export function serialPortState(state = initialTimeState, action) {
+  console.log('serialPortState reducer called with state ', state , ' and action ', action);
 
   switch (action.type) {
     case 'OPEN_PORT_REQUEST':
@@ -18,7 +18,7 @@ export function _time(state = initialTimeState, action) {
     case 'OPEN_PORT_FAILURE':
       return {
         ...state,
-        status: action.result.status,
+        status: action.error.status,
         frozen: false
       }
     case 'SEND_REQUEST':
@@ -35,7 +35,24 @@ export function _time(state = initialTimeState, action) {
     case 'SEND_FAILURE':
       return {
         ...state,
+        status: action.error.status,
+        frozen: false
+      }
+    case 'READ_REQUEST':
+      return {
+        ...state,
+        frozen: false
+      }
+    case 'READ_SUCCESS':
+      return {
+        ...state,
         status: action.result.status,
+        frozen: false
+      }
+    case 'READ_FAILURE':
+      return {
+        ...state,
+        status: action.error.status,
         frozen: false
       }
     default:
