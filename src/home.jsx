@@ -3,26 +3,26 @@ import { connect } from 'react-redux'
 import * as actionCreators from './action-creators'
 
 class Home extends React.Component {
+  componentWillMount () {
+    this.props.dispatch(actionCreators.list())
+  }
   onOpenButtonClick () {
     this.props.dispatch(actionCreators.open('/dev/cu.usbmodem1412', 9800))
   }
-  onSendButtonClick (delay) {
+  onSendButtonClick () {
     this.props.dispatch(actionCreators.send('hoge'))
   }
-  onReadButtonClick (delay) {
-    this.props.dispatch(actionCreators.read())
-  }
-  componentWillMount () {
-    this.props.dispatch(actionCreators.list())
+  onSendMultiButtonClick () {
+    this.props.dispatch(actionCreators.sendMultiData())
   }
   render () {
     var { frozen, status, ports, reduxState } = this.props
     var attrs = {}
-    if (frozen) {
-        attrs = {
-          disabled: true
-        }
-    }
+    // if (frozen) {
+    //     attrs = {
+    //       disabled: true
+    //     }
+    // }
     return (
       <div>
         <span>
@@ -33,6 +33,7 @@ class Home extends React.Component {
         </ol>
         <button { ...attrs } onClick={() => this.onOpenButtonClick()}>Open!</button>
         <button { ...attrs } onClick={() => this.onSendButtonClick()}>Send!</button>
+        <button { ...attrs } onClick={() => this.onSendMultiButtonClick()}>Send Multi!</button>
         <pre>
           redux state = { JSON.stringify(reduxState, null, 2) }
         </pre>

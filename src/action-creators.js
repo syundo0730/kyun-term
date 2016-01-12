@@ -1,7 +1,21 @@
-import Promise from 'bluebird'
 const serialport = window.require("remote").require("serialport")
 const SerialPort = serialport.SerialPort
 var port = null
+
+export function waitMs(delay) {
+  return {
+    types: ['WAIT_MS_REQUEST', 'WAIT_MS_SUCCESS', 'WAIT_MS_FAILURE'],
+    promise: () => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve({
+            time: `${delay} ms`
+          })
+        }, delay)
+      })
+    }
+  }
+}
 
 export function list() {
   return {
@@ -49,7 +63,7 @@ export function open(portName, baudrate) {
       if (error) {
         dispatch({
           type: 'OPEN_PORT_FAILURE',
-          result: {
+          error: {
             status: error
           }
         })
@@ -105,5 +119,18 @@ export function send(data) {
         }
       })
     }
+  }
+}
+
+export function sendMultiData() {
+  return {
+    types: ['SEND_MULTI_REQUEST', 'SEND_MULTI_SUCCESS', 'SEND_MULTI_FAILURE'],
+    sequence: true,
+    payload: [
+      send.bind(null, 'hoge1'),
+      waitMs.bind(null, 1000),
+      send.bind(null, 'hoge2'),
+      waitMs.bind(null, 3000),
+      send.bind(null, 'hoge3')]
   }
 }
