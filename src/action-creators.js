@@ -122,15 +122,11 @@ export function send(data) {
   }
 }
 
-export function sendMultiData() {
+export function sendWithInterval(data) {
+  var payload = data.items.reduce((result, item) => result.concat([send.bind(null, item), waitMs.bind(null, data.interval)]), []);
   return {
     types: ['SEND_MULTI_REQUEST', 'SEND_MULTI_SUCCESS', 'SEND_MULTI_FAILURE'],
     sequence: true,
-    payload: [
-      send.bind(null, 'hoge1'),
-      waitMs.bind(null, 1000),
-      send.bind(null, 'hoge2'),
-      waitMs.bind(null, 3000),
-      send.bind(null, 'hoge3')]
+    payload
   }
 }

@@ -12,8 +12,11 @@ class Home extends React.Component {
   onSendButtonClick () {
     this.props.dispatch(actionCreators.send('hoge'))
   }
-  onSendMultiButtonClick () {
-    this.props.dispatch(actionCreators.sendMultiData())
+  onSendWithIntervalButtonClick () {
+    this.props.dispatch(actionCreators.sendWithInterval({
+      items: ['hoge1', 'hoge2', 'hoge3', 'hoge4'],
+      interval: 1000
+    }))
   }
   render () {
     var { frozen, status, ports, reduxState } = this.props
@@ -33,7 +36,7 @@ class Home extends React.Component {
         </ol>
         <button { ...attrs } onClick={() => this.onOpenButtonClick()}>Open!</button>
         <button { ...attrs } onClick={() => this.onSendButtonClick()}>Send!</button>
-        <button { ...attrs } onClick={() => this.onSendMultiButtonClick()}>Send Multi!</button>
+        <button { ...attrs } onClick={() => this.onSendWithIntervalButtonClick()}>Send Multi!</button>
         <pre>
           redux state = { JSON.stringify(reduxState, null, 2) }
         </pre>
