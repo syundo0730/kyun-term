@@ -10,7 +10,7 @@ class Home extends React.Component {
     this.props.dispatch(actionCreators.open('/dev/cu.usbmodem1412', 9800))
   }
   onSendButtonClick () {
-    this.props.dispatch(actionCreators.send('hoge'))
+    this.props.dispatch(actionCreators.send(String.fromCharCode.apply(null, [97, 98, 99])))
   }
   onSendWithIntervalButtonClick () {
     this.props.dispatch(actionCreators.sendWithInterval({
