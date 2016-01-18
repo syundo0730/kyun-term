@@ -1,4 +1,9 @@
-var initialTimeState = {}
+var initialTimeState = {
+  list: {
+    ports: []
+  },
+  log: []
+}
 
 export function serialPortState(state = initialTimeState, action) {
   console.log('serialPortState reducer called with state ', state , ' and action ', action);
@@ -7,70 +12,96 @@ export function serialPortState(state = initialTimeState, action) {
     case 'LIST_REQUEST':
       return {
         ...state,
-        frozen: true
+        list: {
+          ports: []
+        }
       }
     case 'LIST_SUCCESS':
       return {
         ...state,
-        ports: action.result.ports,
-        frozen: false
+        list: {
+          ports: action.result.ports
+        }
       }
     case 'LIST_FAILURE':
       return {
         ...state,
-        ports: action.error.ports,
-        frozen: false
+        list: {
+          ports: action.error.ports
+        }
       }
     case 'OPEN_PORT_REQUEST':
       return {
         ...state,
-        frozen: true
+        port: {
+          frozen: true
+        }
       }
     case 'OPEN_PORT_SUCCESS':
       return {
         ...state,
-        status: action.result.status,
-        frozen: false
+        port: {
+          frozen: false,
+          status: action.result.status,
+          info: {
+          }
+        }
       }
     case 'OPEN_PORT_FAILURE':
       return {
         ...state,
-        status: action.error.status,
-        frozen: false
+        port: {
+          frozen: false,
+          status: action.error.status
+        }
       }
     case 'SEND_REQUEST':
       return {
         ...state,
-        frozen: true
+        send: {
+          frozen: true
+        }
       }
     case 'SEND_SUCCESS':
       return {
         ...state,
-        status: action.result.status,
-        frozen: false
+        send: {
+          frozen: false,
+          status: action.result.status
+        },
+        log: []
       }
     case 'SEND_FAILURE':
       return {
         ...state,
-        status: action.error.status,
-        frozen: false
+        send: {
+          frozen: false,
+          status: action.error.status
+        }
       }
     case 'READ_REQUEST':
       return {
         ...state,
-        frozen: false
+        read: {
+          frozen: false
+        }
       }
     case 'READ_SUCCESS':
       return {
         ...state,
-        status: action.result.status,
-        frozen: false
+        read: {
+          frozen: false,
+          status: action.result.status
+        },
+        log: []
       }
     case 'READ_FAILURE':
       return {
         ...state,
-        status: action.error.status,
-        frozen: false
+        read: {
+          frozen: false,
+          status: action.error.status
+        }
       }
     default:
       return state
