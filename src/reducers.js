@@ -2,6 +2,16 @@ var initialTimeState = {
   list: {
     ports: []
   },
+  port: {
+    frozen: false,
+    status: null
+  },
+  read: {
+    status: null
+  },
+  send: {
+    frozen: false
+  },
   log: []
 }
 
@@ -41,7 +51,7 @@ export function serialPortState(state = initialTimeState, action) {
       return {
         ...state,
         port: {
-          frozen: false,
+          frozen: true,
           status: action.result.status,
           info: {
           }

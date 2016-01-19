@@ -19,24 +19,22 @@ class Home extends React.Component {
     }))
   }
   render () {
-    var { frozen, status, ports, reduxState } = this.props
-    var attrs = {}
-    // if (frozen) {
-    //     attrs = {
-    //       disabled: true
-    //     }
-    // }
+    var { list, port, send, read, reduxState } = this.props
+
     return (
       <div>
         <span>
-          <b>Serialport status?</b> { status ? `${status}` : 'No connection yet...' }
+          <b>Serialport status?</b> { port.status ? `${port.status}` : 'No connection yet...' }
         </span>
         <ol>
-        { ports ? ports.map(function (port, index) { return (<li key={index}>{port.comName}</li>) }) : 'no ports'}
+        { list.ports ? list.ports.map(function (port, index) { return (<li key={index}>{port.comName}</li>) }) : 'no ports'}
         </ol>
-        <button { ...attrs } onClick={() => this.onOpenButtonClick()}>Open!</button>
-        <button { ...attrs } onClick={() => this.onSendButtonClick()}>Send!</button>
-        <button { ...attrs } onClick={() => this.onSendWithIntervalButtonClick()}>Send Multi!</button>
+        <div>
+          <b>Data</b> { read.status ? `${read.status}` : 'No data yet...' }
+        </div>
+        <button disabled = {port.frozen} onClick={() => this.onOpenButtonClick()}>Open!</button>
+        <button disabled = {send.frozen} onClick={() => this.onSendButtonClick()}>Send!</button>
+        <button disabled = {send.frozen} onClick={() => this.onSendWithIntervalButtonClick()}>Send Multi!</button>
         <pre>
           redux state = { JSON.stringify(reduxState, null, 2) }
         </pre>
@@ -47,9 +45,10 @@ class Home extends React.Component {
 
 export default connect((state/*, props*/) => {
     return {
-      frozen: state.serialPortState.frozen,
-      status: state.serialPortState.status,
-      ports: state.serialPortState.ports,
+      list: state.serialPortState.list,
+      port: state.serialPortState.port,
+      send: state.serialPortState.send,
+      read: state.serialPortState.read,
       reduxState: state
     }
 })(Home);
