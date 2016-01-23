@@ -44,12 +44,12 @@ class Home extends React.Component {
 }
 
 export default connect((state/*, props*/) => {
-    return {
-      list: state.serialPortState.list,
-      port: state.serialPortState.port,
-      send: state.serialPortState.send,
-      read: state.serialPortState.read,
-      log : state.serialPortState.log,
-      reduxState: state
-    }
-})(Home);
+  return {
+    list: state.serialPortState.list,
+    port: state.serialPortState.port,
+    send: state.serialPortState.send,
+    read: state.serialPortState.read,
+    log : state.serialPortState.log,
+    reduxState: state
+  }
+})(Home)

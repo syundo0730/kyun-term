@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-const serialport = window.require("remote").require("serialport")
+const serialport = window.require('remote').require('serialport')
 const SerialPort = serialport.SerialPort
 var port = null
 
@@ -13,7 +13,7 @@ export function waitMs(delay) {
   return {
     types: _.values(WAIT_MS),
     promise: () => {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         setTimeout(() => {
           resolve({
             delay
@@ -39,20 +39,20 @@ export function list() {
             if (error) {
               reject({
                 status: error
-              });
+              })
             } else if (ports) {
               resolve({
                 ports
               })
             } else {
               reject({
-                status: "unknown error"
+                status: 'unknown error'
               })
             }
           })
         } catch(error) {
           reject({
-            status: "unknown error"
+            status: 'unknown error'
           })
         }
       })
@@ -81,7 +81,7 @@ export function open(portName, baudrate) {
     })
     port = new SerialPort(portName, {
       baudrate
-    }, false);
+    }, false)
     port.open(function(error) {
       if (error) {
         dispatch({
@@ -130,7 +130,7 @@ export function send(data) {
             if (error) {
               reject({
                 status: error
-              });
+              })
             } else if (results) {
               resolve({
                 info: {
@@ -160,7 +160,7 @@ export const SEND_MULTI = {
   FAILURE : 'SEND_MULTI_FAILURE'
 }
 export function sendWithInterval(data) {
-  var payload = data.items.reduce((result, item) => result.concat([send.bind(null, item), waitMs.bind(null, data.interval)]), []);
+  var payload = data.items.reduce((result, item) => result.concat([send.bind(null, item), waitMs.bind(null, data.interval)]), [])
   return {
     types: _.values(SEND_MULTI),
     sequence: true,

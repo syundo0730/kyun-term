@@ -5,7 +5,7 @@ var initialSerialPortState = {
 import { LIST, OPEN_PORT, SEND, READ } from './action-creators'
 
 export function serialPortState(state = initialSerialPortState, action) {
-  console.log('serialPortState reducer called with state ', state , ' and action ', action);
+  console.log('serialPortState reducer called with state ', state , ' and action ', action)
 
   switch (action.type) {
     case LIST.REQUEST:

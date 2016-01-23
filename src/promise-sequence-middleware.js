@@ -15,9 +15,9 @@ export default function promiseSequenceMiddleware() {
 
     let promise = null
     if (sequence) {
-      promise = actions.reduce((result, item) => result.then(() => next(item())), Promise.resolve());
+      promise = actions.reduce((result, item) => result.then(() => next(item())), Promise.resolve())
     } else {
-      promise = Promise.all(actions.map(item => next(item())));
+      promise = Promise.all(actions.map(item => next(item())))
     }
 
     if (!promise) {
