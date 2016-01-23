@@ -1,15 +1,22 @@
+import _ from 'lodash'
+
 const serialport = window.require("remote").require("serialport")
 const SerialPort = serialport.SerialPort
 var port = null
 
+export const WAIT_MS = {
+  REQUEST : 'WAIT_MS_REQUEST',
+  SUCCESS : 'WAIT_MS_SUCCESS',
+  FAILURE : 'WAIT_MS_FAILURE'
+}
 export function waitMs(delay) {
   return {
-    types: ['WAIT_MS_REQUEST', 'WAIT_MS_SUCCESS', 'WAIT_MS_FAILURE'],
+    types: _.values(WAIT_MS),
     promise: () => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve({
-            time: `${delay} ms`
+            delay
           })
         }, delay)
       })
@@ -17,16 +24,20 @@ export function waitMs(delay) {
   }
 }
 
+export const LIST = {
+  REQUEST : 'LIST_REQUEST',
+  SUCCESS : 'LIST_SUCCESS',
+  FAILURE : 'LIST_FAILURE'
+}
 export function list() {
   return {
-    types: ['LIST_REQUEST', 'LIST_SUCCESS', 'LIST_FAILURE'],
+    types: _.values(LIST),
     promise: () => {
       return new Promise((resolve, reject) => {
         try {
           serialport.list(function(error, ports) {
             if (error) {
               reject({
-                ports: [],
                 status: error
               });
             } else if (ports) {
@@ -35,13 +46,13 @@ export function list() {
               })
             } else {
               reject({
-                ports: []
+                status: "unknown error"
               })
             }
           })
         } catch(error) {
           reject({
-            ports: []
+            status: "unknown error"
           })
         }
       })
@@ -49,12 +60,24 @@ export function list() {
   }
 }
 
+export const OPEN_PORT = {
+  REQUEST : 'OPEN_PORT_REQUEST',
+  SUCCESS : 'OPEN_PORT_SUCCESS',
+  FAILURE : 'OPEN_PORT_FAILURE'
+}
+export const READ = {
+  REQUEST : 'READ_REQUEST',
+  SUCCESS : 'READ_SUCCESS',
+  FAILURE : 'READ_FAILURE'
+}
 export function open(portName, baudrate) {
   return function(dispatch) {
-    dispatch({
-      type: 'OPEN_PORT_REQUEST',
+    let info = {
       portName,
       baudrate
+    }
+    dispatch({
+      type: OPEN_PORT.REQUEST
     })
     port = new SerialPort(portName, {
       baudrate
@@ -62,26 +85,27 @@ export function open(portName, baudrate) {
     port.open(function(error) {
       if (error) {
         dispatch({
-          type: 'OPEN_PORT_FAILURE',
+          type: OPEN_PORT.FAILURE,
           error: {
-            status: error
+            status: error,
+            info
           }
         })
       } else {
         dispatch({
-          type: 'OPEN_PORT_SUCCESS',
+          type: OPEN_PORT.SUCCESS,
           result: {
-            status: 'port opened'
+            info
           }
         })
         dispatch({
-          type: 'READ_REQUEST'
+          type: READ.REQUEST
         })
         port.on('data', function(data) {
           dispatch({
-            type: 'READ_SUCCESS',
+            type: READ.SUCCESS,
             result: {
-              status: data
+              recievedData: data
             }
           })
         })
@@ -90,10 +114,15 @@ export function open(portName, baudrate) {
   }
 }
 
+export const SEND = {
+  REQUEST : 'SEND_REQUEST',
+  SUCCESS : 'SEND_SUCCESS',
+  FAILURE : 'SEND_FAILURE'
+}
 export function send(data) {
   return {
     data: data,
-    types: ['SEND_REQUEST', 'SEND_SUCCESS', 'SEND_FAILURE'],
+    types: _.values(SEND),
     promise: () => {
       return new Promise((resolve, reject) => {
         try {
@@ -104,7 +133,10 @@ export function send(data) {
               });
             } else if (results) {
               resolve({
-                status: `send ${results} chars`
+                info: {
+                  length: results,
+                  sendData: data
+                }
               })
             } else {
               reject({
@@ -114,7 +146,7 @@ export function send(data) {
           })
         } catch(error) {
           reject({
-            status: 'Port is still not opened'
+            status: 'error'
           })
         }
       })
@@ -122,10 +154,15 @@ export function send(data) {
   }
 }
 
+export const SEND_MULTI = {
+  REQUEST : 'SEND_MULTI_REQUEST',
+  SUCCESS : 'SEND_MULTI_SUCCESS',
+  FAILURE : 'SEND_MULTI_FAILURE'
+}
 export function sendWithInterval(data) {
   var payload = data.items.reduce((result, item) => result.concat([send.bind(null, item), waitMs.bind(null, data.interval)]), []);
   return {
-    types: ['SEND_MULTI_REQUEST', 'SEND_MULTI_SUCCESS', 'SEND_MULTI_FAILURE'],
+    types: _.values(SEND_MULTI),
     sequence: true,
     payload
   }

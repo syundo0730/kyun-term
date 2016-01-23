@@ -1,63 +1,48 @@
-var initialTimeState = {
-  list: {
-    ports: []
-  },
-  port: {
-    frozen: false,
-    status: null
-  },
-  read: {
-    status: null
-  },
-  send: {
-    frozen: false
-  },
-  log: []
+var initialSerialPortState = {
+  list: {}, port: {}, send: {}, read: {}, log: []
 }
 
-export function serialPortState(state = initialTimeState, action) {
+import { LIST, OPEN_PORT, SEND, READ } from './action-creators'
+
+export function serialPortState(state = initialSerialPortState, action) {
   console.log('serialPortState reducer called with state ', state , ' and action ', action);
 
   switch (action.type) {
-    case 'LIST_REQUEST':
+    case LIST.REQUEST:
       return {
-        ...state,
-        list: {
-          ports: []
-        }
+        ...state
       }
-    case 'LIST_SUCCESS':
+    case LIST.SUCCESS:
       return {
         ...state,
         list: {
           ports: action.result.ports
         }
       }
-    case 'LIST_FAILURE':
+    case LIST.FAILURE:
       return {
         ...state,
         list: {
-          ports: action.error.ports
+          ports: [],
+          status: action.error.status
         }
       }
-    case 'OPEN_PORT_REQUEST':
+    case OPEN_PORT.REQUEST:
       return {
         ...state,
         port: {
           frozen: true
         }
       }
-    case 'OPEN_PORT_SUCCESS':
+    case OPEN_PORT.SUCCESS:
       return {
         ...state,
         port: {
           frozen: true,
-          status: action.result.status,
-          info: {
-          }
+          info: action.result.info
         }
       }
-    case 'OPEN_PORT_FAILURE':
+    case OPEN_PORT.FAILURE:
       return {
         ...state,
         port: {
@@ -65,23 +50,26 @@ export function serialPortState(state = initialTimeState, action) {
           status: action.error.status
         }
       }
-    case 'SEND_REQUEST':
+    case SEND.REQUEST:
       return {
         ...state,
         send: {
           frozen: true
         }
       }
-    case 'SEND_SUCCESS':
+    case SEND.SUCCESS:
       return {
         ...state,
         send: {
           frozen: false,
-          status: action.result.status
+          info: action.result.info
         },
-        log: []
+        log: [
+          ...state.log,
+          { sendData: action.result.info.sendData }
+        ]
       }
-    case 'SEND_FAILURE':
+    case SEND.FAILURE:
       return {
         ...state,
         send: {
@@ -89,23 +77,26 @@ export function serialPortState(state = initialTimeState, action) {
           status: action.error.status
         }
       }
-    case 'READ_REQUEST':
+    case READ.REQUEST:
       return {
         ...state,
         read: {
-          frozen: false
+          frozen: true
         }
       }
-    case 'READ_SUCCESS':
+    case READ.SUCCESS:
       return {
         ...state,
         read: {
           frozen: false,
-          status: action.result.status
+          recievedData: action.result.recievedData
         },
-        log: []
+        log: [
+          ...state.log,
+          { recievedData: action.result.recievedData }
+        ]
       }
-    case 'READ_FAILURE':
+    case READ.FAILURE:
       return {
         ...state,
         read: {

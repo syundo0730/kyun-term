@@ -19,22 +19,22 @@ class Home extends React.Component {
     }))
   }
   render () {
-    var { list, port, send, read, reduxState } = this.props
+    const { list, port, send, read, reduxState } = this.props
 
     return (
       <div>
         <span>
-          <b>Serialport status?</b> { port.status ? `${port.status}` : 'No connection yet...' }
+          <b>Serialport status?</b> { port.info ? `${port.info.portName || 'No port'} opened` : 'No info' }
         </span>
         <ol>
         { list.ports ? list.ports.map(function (port, index) { return (<li key={index}>{port.comName}</li>) }) : 'no ports'}
         </ol>
         <div>
-          <b>Data</b> { read.status ? `${read.status}` : 'No data yet...' }
+          <b>Data</b> { read.recievedData ? `${read.recievedData}` : 'No data yet...' }
         </div>
-        <button disabled = {port.frozen} onClick={() => this.onOpenButtonClick()}>Open!</button>
-        <button disabled = {send.frozen} onClick={() => this.onSendButtonClick()}>Send!</button>
-        <button disabled = {send.frozen} onClick={() => this.onSendWithIntervalButtonClick()}>Send Multi!</button>
+        <button disabled = {!!(port.frozen)} onClick={() => this.onOpenButtonClick()}>Open!</button>
+        <button disabled = {!!(send.frozen)} onClick={() => this.onSendButtonClick()}>Send!</button>
+        <button disabled = {!!(send.frozen)} onClick={() => this.onSendWithIntervalButtonClick()}>Send Multi!</button>
         <pre>
           redux state = { JSON.stringify(reduxState, null, 2) }
         </pre>
@@ -49,6 +49,7 @@ export default connect((state/*, props*/) => {
       port: state.serialPortState.port,
       send: state.serialPortState.send,
       read: state.serialPortState.read,
+      log : state.serialPortState.log,
       reduxState: state
     }
 })(Home);
