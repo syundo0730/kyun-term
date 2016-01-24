@@ -1,14 +1,10 @@
 import _ from 'lodash'
 
-const serialport = window.require('remote').require('serialport')
-const SerialPort = serialport.SerialPort
+import { WAIT_MS, LIST, OPEN_PORT, READ, SEND, SEND_MULTI } from '../constants/action-types'
+
+import { serialport, SerialPort } from '../serialport'
 var port = null
 
-export const WAIT_MS = {
-  REQUEST : 'WAIT_MS_REQUEST',
-  SUCCESS : 'WAIT_MS_SUCCESS',
-  FAILURE : 'WAIT_MS_FAILURE'
-}
 export function waitMs(delay) {
   return {
     types: _.values(WAIT_MS),
@@ -24,11 +20,6 @@ export function waitMs(delay) {
   }
 }
 
-export const LIST = {
-  REQUEST : 'LIST_REQUEST',
-  SUCCESS : 'LIST_SUCCESS',
-  FAILURE : 'LIST_FAILURE'
-}
 export function list() {
   return {
     types: _.values(LIST),
@@ -60,16 +51,6 @@ export function list() {
   }
 }
 
-export const OPEN_PORT = {
-  REQUEST : 'OPEN_PORT_REQUEST',
-  SUCCESS : 'OPEN_PORT_SUCCESS',
-  FAILURE : 'OPEN_PORT_FAILURE'
-}
-export const READ = {
-  REQUEST : 'READ_REQUEST',
-  SUCCESS : 'READ_SUCCESS',
-  FAILURE : 'READ_FAILURE'
-}
 export function open(portName, baudrate) {
   return function(dispatch) {
     let info = {
@@ -114,11 +95,6 @@ export function open(portName, baudrate) {
   }
 }
 
-export const SEND = {
-  REQUEST : 'SEND_REQUEST',
-  SUCCESS : 'SEND_SUCCESS',
-  FAILURE : 'SEND_FAILURE'
-}
 export function send(data) {
   return {
     data: data,
@@ -154,11 +130,6 @@ export function send(data) {
   }
 }
 
-export const SEND_MULTI = {
-  REQUEST : 'SEND_MULTI_REQUEST',
-  SUCCESS : 'SEND_MULTI_SUCCESS',
-  FAILURE : 'SEND_MULTI_FAILURE'
-}
 export function sendWithInterval(data) {
   var payload = data.items.reduce((result, item) => result.concat([send.bind(null, item), waitMs.bind(null, data.interval)]), [])
   return {

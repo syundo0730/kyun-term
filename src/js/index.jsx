@@ -1,6 +1,6 @@
 import { render } from 'react-dom'
-import createStore from './create-store'
-import Application from './application.jsx'
+import createStore from './store/create-store'
+import Application from './components/application.jsx'
 
 const store = createStore()
 
