@@ -37,7 +37,7 @@ export function list() {
               })
             } else {
               reject({
-                status: 'unknown error'
+                status: 'no ports'
               })
             }
           })
@@ -97,7 +97,6 @@ export function open(portName, baudrate) {
 
 export function send(data) {
   return {
-    data: data,
     types: _.values(SEND),
     promise: () => {
       return new Promise((resolve, reject) => {
@@ -116,13 +115,13 @@ export function send(data) {
               })
             } else {
               reject({
-                status: 'error'
+                status: 'no data send'
               })
             }
           })
         } catch(error) {
           reject({
-            status: 'error'
+            status: 'unknown error'
           })
         }
       })
