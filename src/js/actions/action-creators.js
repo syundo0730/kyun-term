@@ -2,8 +2,9 @@ import _ from 'lodash'
 
 import { WAIT_MS, LIST, OPEN_PORT, READ, SEND, SEND_MULTI } from '../constants/action-types'
 
-import { serialport, SerialPort } from '../serialport'
-var port = null
+import { serialport, windowExists } from '../serialport'
+const SerialPort = serialport.SerialPort
+export var port = windowExists ? null: new SerialPort()
 
 export function waitMs(delay) {
   return {
@@ -60,9 +61,11 @@ export function open(portName, baudrate) {
     dispatch({
       type: OPEN_PORT.REQUEST
     })
-    port = new SerialPort(portName, {
-      baudrate
-    }, false)
+    if (windowExists) {
+      port = new SerialPort(portName, {
+        baudrate
+      }, false)
+    }
     port.open(function(error) {
       if (error) {
         dispatch({

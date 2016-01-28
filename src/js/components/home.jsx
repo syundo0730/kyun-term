@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import * as actionCreators from '../actions/action-creators'
 
-class Home extends React.Component {
+export class Home extends React.Component {
   componentWillMount () {
     this.props.dispatch(actionCreators.list())
   }
