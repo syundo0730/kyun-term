@@ -1,4 +1,6 @@
 # kyun-term
+[![Build Status](https://travis-ci.org/syundo0730/kyun-term.svg?branch=master)](https://travis-ci.org/syundo0730/kyun-term)
+
 This is serial terminal
 
 # To Use
