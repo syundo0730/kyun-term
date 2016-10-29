@@ -1,25 +1,10 @@
 import _ from 'lodash'
 
-import { WAIT_MS, LIST, OPEN_PORT, READ, SEND, SEND_MULTI } from '../constants/action-types'
+import { WAIT_MS, LIST, OPEN_PORT, READ, SEND } from '../constants/action-types'
 
 import { serialport, windowExists } from '../serialport'
 const SerialPort = serialport.SerialPort
 export var port = windowExists ? null: new SerialPort()
-
-export function waitMs(delay) {
-  return {
-    types: _.values(WAIT_MS),
-    promise: () => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({
-            delay
-          })
-        }, delay)
-      })
-    }
-  }
-}
 
 export function list() {
   return {
@@ -85,11 +70,36 @@ export function open(portName, baudrate) {
         dispatch({
           type: READ.REQUEST
         })
+        /**
+         * register on received handler
+         */
         port.on('data', function(data) {
           dispatch({
             type: READ.SUCCESS,
             result: {
               recievedData: data
+            }
+          })
+        })
+        /**
+         * register on disconnect handler
+         */
+        port.on('disconnect', function(data) {
+          dispatch({
+            type: OPEN_PORT.FAILURE,
+            error: {
+              status: 'disconnected'
+            }
+          })
+        })
+        /**
+         * register on error handler
+         */
+        port.on('error', function(data) {
+          dispatch({
+            type: OPEN_PORT.FAILURE,
+            error: {
+              status: 'error'
             }
           })
         })
@@ -129,14 +139,5 @@ export function send(data) {
         }
       })
     }
-  }
-}
-
-export function sendWithInterval(data) {
-  var payload = data.items.reduce((result, item) => result.concat([send.bind(null, item), waitMs.bind(null, data.interval)]), [])
-  return {
-    types: _.values(SEND_MULTI),
-    sequence: true,
-    payload
   }
 }
