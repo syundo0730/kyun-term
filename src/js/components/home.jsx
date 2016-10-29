@@ -1,6 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actionCreators from '../actions/action-creators'
+import Navigation from './navigation/index.jsx'
+import Receive from './receive/index.jsx'
+import Send from './send/index.jsx'
 
 export class Home extends React.Component {
   componentWillMount () {
@@ -23,21 +26,9 @@ export class Home extends React.Component {
 
     return (
       <div>
-        <span>
-          <b>Serialport status?</b> { port.info ? `${port.info.portName || 'No port'} opened` : 'No info' }
-        </span>
-        <ol>
-        { list.ports ? list.ports.map(function (port, index) { return (<li key={index}>{port.comName}</li>) }) : 'no ports'}
-        </ol>
-        <div>
-          <b>Data</b> { read.recievedData ? `${read.recievedData}` : 'No data yet...' }
-        </div>
-        <button disabled = {!!(port.frozen)} onClick={() => this.onOpenButtonClick()}>Open!</button>
-        <button disabled = {!!(send.frozen)} onClick={() => this.onSendButtonClick()}>Send!</button>
-        <button disabled = {!!(send.frozen)} onClick={() => this.onSendWithIntervalButtonClick()}>Send Multi!</button>
-        <pre>
-          redux state = { JSON.stringify(reduxState, null, 2) }
-        </pre>
+        <Navigation />
+        <Send />
+        <Receive />
       </div>
     )
   }
