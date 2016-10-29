@@ -27,3 +27,5 @@ export const SEND = {
   SUCCESS : 'SEND_SUCCESS',
   FAILURE : 'SEND_FAILURE'
 }
+
+export const SET_PORT_CONFIG = 'SET_PORT_CONFIG'

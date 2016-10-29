@@ -1,29 +1,10 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import * as actionCreators from '../actions/action-creators'
 import Navigation from './navigation/index.jsx'
 import Receive from './receive/index.jsx'
 import Send from './send/index.jsx'
 
-export class Home extends React.Component {
-  componentWillMount () {
-    this.props.dispatch(actionCreators.list())
-  }
-  onOpenButtonClick () {
-    this.props.dispatch(actionCreators.open('/dev/cu.usbmodem1412', 9800))
-  }
-  onSendButtonClick () {
-    this.props.dispatch(actionCreators.send(String.fromCharCode.apply(null, [97, 98, 99])))
-  }
-  onSendWithIntervalButtonClick () {
-    this.props.dispatch(actionCreators.sendWithInterval({
-      items: ['hoge1', 'hoge2', 'hoge3', 'hoge4'],
-      interval: 1000
-    }))
-  }
+export default class Home extends React.Component {
   render () {
-    const { list, port, send, read, reduxState } = this.props
-
     return (
       <div>
         <Navigation />
@@ -33,14 +14,3 @@ export class Home extends React.Component {
     )
   }
 }
-
-export default connect((state/*, props*/) => {
-  return {
-    list: state.serialPortState.list,
-    port: state.serialPortState.port,
-    send: state.serialPortState.send,
-    read: state.serialPortState.read,
-    log : state.serialPortState.log,
-    reduxState: state
-  }
-})(Home)

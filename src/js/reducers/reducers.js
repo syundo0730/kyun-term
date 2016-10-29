@@ -1,9 +1,8 @@
+import { LIST, OPEN_PORT, SEND, READ, SET_PORT_CONFIG } from '../constants/action-types'
+
 var initialSerialPortState = {
   list: {}, port: {}, send: {}, read: {}, log: []
 }
-
-import { LIST, OPEN_PORT, SEND, READ } from '../constants/action-types'
-
 export function serialPortState(state = initialSerialPortState, action) {
   console.log('serialPortState reducer called with state ', state , ' and action ', action)
 
@@ -102,6 +101,24 @@ export function serialPortState(state = initialSerialPortState, action) {
         read: {
           frozen: false,
           status: action.error.status
+        }
+      }
+    default:
+      return state
+  }
+}
+
+var initialConfigState = {
+  port_config: {}
+}
+export function configState(state = initialConfigState, action) {
+  switch (action.type) {
+    case SET_PORT_CONFIG:
+      return {
+        ...state,
+        portConfig: {
+          port: action.port,
+          baudrate: action.baudrate
         }
       }
     default:
