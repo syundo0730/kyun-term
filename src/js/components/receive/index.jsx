@@ -7,8 +7,7 @@ export default class Receive extends React.Component {
     return (
       <div>
         <Card title='Received Data'>
-				  <TextView>
-				  </TextView>
+				  <TextView />
         </Card>
       </div>
     )
