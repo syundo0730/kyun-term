@@ -1,4 +1,9 @@
-import { LIST, OPEN_PORT, SEND, READ, SET_PORT_CONFIG } from '../constants/action-types'
+import { LIST,
+  OPEN_PORT,
+  READ,
+  SEND,
+  SET_SEND_BUFFER,
+  SET_PORT_CONFIG } from '../constants/action-types'
 
 var initialSerialPortState = {
   list: {}, port: {}, send: {}, read: {}, log: []
@@ -52,9 +57,9 @@ export function serialPortState(state = initialSerialPortState, action) {
     case SEND.REQUEST:
       return {
         ...state,
-        send: {
+        send: Object.assign(state.send, {
           frozen: true
-        }
+        })
       }
     case SEND.SUCCESS:
       return {
@@ -71,9 +76,16 @@ export function serialPortState(state = initialSerialPortState, action) {
     case SEND.FAILURE:
       return {
         ...state,
-        send: {
+        send: Object.assign(state.send, {
           frozen: false,
           status: action.error.status
+        })
+      }
+    case SET_SEND_BUFFER:
+      return {
+        ...state,
+        send: {
+          buffer: action.data
         }
       }
     case READ.REQUEST:

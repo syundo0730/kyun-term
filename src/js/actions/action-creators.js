@@ -1,6 +1,11 @@
 import _ from 'lodash'
 
-import { WAIT_MS, LIST, OPEN_PORT, READ, SEND, SET_PORT_CONFIG } from '../constants/action-types'
+import { LIST,
+  OPEN_PORT,
+  READ,
+  SEND,
+  SET_SEND_BUFFER,
+  SET_PORT_CONFIG } from '../constants/action-types'
 
 import { serialport, windowExists } from '../serialport'
 const SerialPort = serialport.SerialPort
@@ -139,6 +144,13 @@ export function send(data) {
         }
       })
     }
+  }
+}
+
+export function setSendBuffer(data) {
+  return {
+    type: SET_SEND_BUFFER,
+    data
   }
 }
 

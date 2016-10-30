@@ -1,9 +1,3 @@
-export const WAIT_MS = {
-  REQUEST : 'WAIT_MS_REQUEST',
-  SUCCESS : 'WAIT_MS_SUCCESS',
-  FAILURE : 'WAIT_MS_FAILURE'
-}
-
 export const LIST = {
   REQUEST : 'LIST_REQUEST',
   SUCCESS : 'LIST_SUCCESS',
@@ -27,5 +21,7 @@ export const SEND = {
   SUCCESS : 'SEND_SUCCESS',
   FAILURE : 'SEND_FAILURE'
 }
+
+export const SET_SEND_BUFFER = 'SET_SEND_BUFFER'
 
 export const SET_PORT_CONFIG = 'SET_PORT_CONFIG'
