@@ -116,7 +116,7 @@ describe('reducer', () => {
     describe('SEND', () => {
       it('should handle SEND_REQUEST', () => {
         expect(
-          serialPortState({}, {
+          serialPortState({ send: {} }, {
             type: types.SEND.REQUEST
           })
         ).toEqual({
@@ -153,7 +153,7 @@ describe('reducer', () => {
       })
       it('should handle SEND_FAILURE', () => {
         expect(
-          serialPortState({}, {
+          serialPortState({ send: {} }, {
             type: types.SEND.FAILURE,
             error: {
               status: 'error'

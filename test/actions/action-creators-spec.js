@@ -1,5 +1,6 @@
 import configureMockStore from 'redux-mock-store'
 import sinon from 'sinon'
+import expect from 'expect'
 import thunk from 'redux-thunk'
 import promiseMiddleware from '../../src/js/middlewares/promise-middleware'
 import promiseSequenceMiddleware from '../../src/js/middlewares/promise-sequence-middleware'
@@ -12,34 +13,10 @@ const middlewares = [ thunk, promiseSequenceMiddleware, promiseMiddleware]
 const mockStore = configureMockStore(middlewares)
 
 describe('async actions', () => {
-  describe('waitMs', () => {
-    var clock
-    beforeEach(() => { clock = sinon.useFakeTimers() })
-    afterEach(() => clock.restore())
-
-    it('creates WAIT_MS when waiting ms has been done', (done) => {
-      const initialState = {}
-      const expectedActions = [
-        { type: types.WAIT_MS.REQUEST },
-        {
-          type: types.WAIT_MS.SUCCESS,
-          result: {
-            delay : 100
-          }
-        }
-      ]
-      const store = mockStore(initialState, expectedActions, done)
-      store.dispatch(actions.waitMs(100))
-
-      // tick 100 ms
-      clock.tick(100)
-    })
-  })
-
   describe('list', () => {
     afterEach(() => serialport.list.restore())
 
-    it('creates LIST_SUCCESS when listing serial ports has been done', (done) => {
+    it('creates LIST_SUCCESS when listing serial ports has been done', () => {
       sinon.stub(serialport, 'list', (callback) => callback(null, ['port0']))
       const initialState = {}
       const expectedActions = [
@@ -51,11 +28,13 @@ describe('async actions', () => {
           }
         }
       ]
-      const store = mockStore(initialState, expectedActions, done)
-      store.dispatch(actions.list())
+      const store = mockStore(initialState)
+      store.dispatch(actions.list()).then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
     })
 
-    it('creates LIST_FAILURE when listing serial ports has failed', (done) => {
+    it('creates LIST_FAILURE when listing serial ports has failed', () => {
       sinon.stub(serialport, 'list', (callback) => callback('test error', ['port0']))
       const initialState = {}
       const expectedActions = [
@@ -67,11 +46,13 @@ describe('async actions', () => {
           }
         }
       ]
-      const store = mockStore(initialState, expectedActions, done)
-      store.dispatch(actions.list())
+      const store = mockStore(initialState)
+      store.dispatch(actions.list()).then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
     })
 
-    it('creates LIST_FAILURE when no serial ports listed', (done) => {
+    it('creates LIST_FAILURE when no serial ports listed', () => {
       sinon.stub(serialport, 'list', (callback) => callback(null, null))
       const initialState = {}
       const expectedActions = [
@@ -83,11 +64,13 @@ describe('async actions', () => {
           }
         }
       ]
-      const store = mockStore(initialState, expectedActions, done)
-      store.dispatch(actions.list())
+      const store = mockStore(initialState)
+      store.dispatch(actions.list()).then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
     })
 
-    it('creates LIST_FAILURE when listing serial ports has failed with unknown error', (done) => {
+    it('creates LIST_FAILURE when listing serial ports has failed with unknown error', () => {
       sinon.stub(serialport, 'list', () => { throw new Error('UNKNOWN_ERROR')})
       const initialState = {}
       const expectedActions = [
@@ -99,8 +82,10 @@ describe('async actions', () => {
           }
         }
       ]
-      const store = mockStore(initialState, expectedActions, done)
-      store.dispatch(actions.list())
+      const store = mockStore(initialState)
+      store.dispatch(actions.list()).then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
     })
   })
 
@@ -112,7 +97,7 @@ describe('async actions', () => {
       port.on.restore()
     })
 
-    it('creates OPEN_PORT_SUCCESS when opening serial ports has been done', (done) => {
+    it('creates OPEN_PORT_SUCCESS when opening serial ports has been done', () => {
       sinon.stub(port, 'open', (callback) => callback(null))
       sinon.stub(port, 'on', (name, callback) => callback('test data'))
       const initialState = {}
@@ -133,13 +118,26 @@ describe('async actions', () => {
           result: {
             recievedData: 'test data'
           }
+        },
+        {
+          type: types.OPEN_PORT.FAILURE,
+          error: {
+            status: 'disconnected'
+          }
+        },
+        {
+          type: types.OPEN_PORT.FAILURE,
+          error: {
+            status: 'error'
+          }
         }
       ]
-      const store = mockStore(initialState, expectedActions, done)
+      const store = mockStore(initialState)
       store.dispatch(actions.open('/dev/cu.usbmodem1412', 9800))
+      expect(store.getActions()).toEqual(expectedActions)
     })
 
-    it('creates OPEN_PORT_FAILURE when opening serial ports has failed', (done) => {
+    it('creates OPEN_PORT_FAILURE when opening serial ports has failed', () => {
       sinon.stub(port, 'open', (callback) => callback('test error'))
       const initialState = {}
       const expectedActions = [
@@ -155,8 +153,9 @@ describe('async actions', () => {
           }
         }
       ]
-      const store = mockStore(initialState, expectedActions, done)
+      const store = mockStore(initialState)
       store.dispatch(actions.open('/dev/cu.usbmodem1412', 9800))
+      expect(store.getActions()).toEqual(expectedActions)
     })
   })
 
@@ -167,7 +166,7 @@ describe('async actions', () => {
       port.write.restore()
     })
 
-    it('creates SEND_SUCCESS when sendng data has been done', (done) => {
+    it('creates SEND_SUCCESS when sendng data has been done', () => {
       sinon.stub(port, 'write', (data, callback) => callback(null, data.length))
       const initialState = {}
       const expectedActions = [
@@ -182,11 +181,13 @@ describe('async actions', () => {
           }
         }
       ]
-      const store = mockStore(initialState, expectedActions, done)
-      store.dispatch(actions.send(mockData))
+      const store = mockStore(initialState)
+      store.dispatch(actions.send(mockData)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
     })
 
-    it('creates SEND_FAILURE when sending data has failed', (done) => {
+    it('creates SEND_FAILURE when sending data has failed', () => {
       sinon.stub(port, 'write', (data, callback) => callback('test error', data.length))
       const initialState = {}
       const expectedActions = [
@@ -198,11 +199,13 @@ describe('async actions', () => {
           }
         }
       ]
-      const store = mockStore(initialState, expectedActions, done)
-      store.dispatch(actions.send(mockData))
+      const store = mockStore(initialState)
+      store.dispatch(actions.send(mockData)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
     })
 
-    it('creates SEND_FAILURE when no data send', (done) => {
+    it('creates SEND_FAILURE when no data send', () => {
       sinon.stub(port, 'write', (data, callback) => callback(null, null))
       const initialState = {}
       const expectedActions = [
@@ -214,11 +217,13 @@ describe('async actions', () => {
           }
         }
       ]
-      const store = mockStore(initialState, expectedActions, done)
-      store.dispatch(actions.send(mockData))
+      const store = mockStore(initialState)
+      store.dispatch(actions.send(mockData)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
     })
 
-    it('creates SEND_FAILURE when sending data has failed with unknown error', (done) => {
+    it('creates SEND_FAILURE when sending data has failed with unknown error', () => {
       sinon.stub(port, 'write', (data, callback) => { throw new Error('UNKNOWN_ERROR')})
       const initialState = {}
       const expectedActions = [
@@ -230,8 +235,10 @@ describe('async actions', () => {
           }
         }
       ]
-      const store = mockStore(initialState, expectedActions, done)
-      store.dispatch(actions.send(mockData))
+      const store = mockStore(initialState)
+      store.dispatch(actions.send(mockData)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions)
+      })
     })
   })
 })

@@ -9,4 +9,4 @@ mockSerialPort.SerialPort.prototype.write = () => {}
 
 export const windowExists = (typeof window === 'object')
 
-export const serialport =  require('electron').remote.require('serialport')
+export const serialport =  windowExists ? require('electron').remote.require('serialport') : mockSerialPort
