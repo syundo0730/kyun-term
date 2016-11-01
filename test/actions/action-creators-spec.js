@@ -116,7 +116,7 @@ describe('async actions', () => {
         {
           type: types.READ.SUCCESS,
           result: {
-            recievedData: 'test data'
+            receivedData: 'test data'
           }
         },
         {

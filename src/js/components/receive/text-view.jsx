@@ -14,8 +14,8 @@ class TextView extends React.Component {
 }
 
 export default connect((state/*, props*/) => {
-  const recievedData = state.serialPortState.read.recievedData;
+  const receivedData = state.serialPortState.read.receivedData;
   return {
-    receivedData: recievedData ? receivedData : ''
+    receivedData: receivedData ? receivedData : ''
   }
 })(TextView)

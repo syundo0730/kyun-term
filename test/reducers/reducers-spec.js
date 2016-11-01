@@ -186,16 +186,16 @@ describe('reducer', () => {
           }, {
             type: types.READ.SUCCESS,
             result: {
-              recievedData: 'hoge'
+              receivedData: 'hoge'
             }
           })
         ).toEqual({
           read: {
             frozen: false,
-            recievedData: 'hoge'
+            receivedData: 'hoge'
           },
           log: [{
-            recievedData: 'hoge'
+            receivedData: 'hoge'
           }]
         })
       })

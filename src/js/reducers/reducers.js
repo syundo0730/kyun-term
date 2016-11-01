@@ -100,11 +100,11 @@ export function serialPortState(state = initialSerialPortState, action) {
         ...state,
         read: {
           frozen: false,
-          recievedData: action.result.recievedData
+          receivedData: action.result.receivedData
         },
         log: [
           ...state.log,
-          { recievedData: action.result.recievedData }
+          { receivedData: action.result.receivedData }
         ]
       }
     case READ.FAILURE:
