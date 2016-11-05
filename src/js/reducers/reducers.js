@@ -85,8 +85,8 @@ export function serialPortState(state = initialSerialPortState, action) {
           info: action.result.info
         },
         log: [
-          ...state.log,
-          { sendData: action.result.info.sendData }
+          { sendData: action.result.info.sendData },
+          ...state.log
         ]
       }
     case SEND.FAILURE:
@@ -119,8 +119,8 @@ export function serialPortState(state = initialSerialPortState, action) {
           receivedData: action.result.receivedData
         },
         log: [
-          ...state.log,
-          { receivedData: action.result.receivedData }
+          { receivedData: action.result.receivedData },
+          ...state.log
         ]
       }
     case READ.FAILURE:
