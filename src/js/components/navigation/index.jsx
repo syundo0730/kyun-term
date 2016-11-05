@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 
 class Navigation extends React.Component {
   portInfoString () {
-    const { port } = this.props
-    return port.info ? 'connected' : 'not connected';
+    const { portInfo } = this.props
+    return portInfo ? `${portInfo.portName} (${portInfo.baudrate} bps)` : 'not connected';
   }
   render () {
     return (
@@ -22,6 +22,6 @@ class Navigation extends React.Component {
 
 export default connect((state/*, props*/) => {
   return {
-    port: state.serialPortState.port,
+    portInfo: state.serialPortState.port.info
   }
 })(Navigation)
