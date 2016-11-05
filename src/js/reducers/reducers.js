@@ -1,5 +1,6 @@
 import { LIST,
   OPEN_PORT,
+  CLOSE_PORT,
   READ,
   SEND,
   SET_SEND_BUFFER,
@@ -53,6 +54,21 @@ export function serialPortState(state = initialSerialPortState, action) {
           frozen: false,
           status: action.error.status
         }
+      }
+    case CLOSE_PORT.REQUEST:
+      return {
+        ...state
+      }
+    case CLOSE_PORT.SUCCESS:
+      return {
+        ...state,
+        port: {
+          frozen: false
+        }
+      }
+    case CLOSE_PORT.FAILURE:
+      return {
+        ...state
       }
     case SEND.REQUEST:
       return {

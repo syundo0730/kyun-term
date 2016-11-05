@@ -3,6 +3,7 @@ import _ from 'lodash'
 import {
   LIST,
   OPEN_PORT,
+  CLOSE_PORT,
   READ,
   SEND,
   SET_SEND_BUFFER,
@@ -105,6 +106,27 @@ export function open(portName, baudrate) {
         })
       }
     })
+  }
+}
+
+export function close() {
+  return {
+    types: _.values(CLOSE_PORT),
+    promise: () => {
+      return new Promise((resolve, reject) => {
+        try {
+          port.close((error) => {
+            if (error) {
+              reject({ status: error })
+            } else {
+              resolve({})
+            }
+          })
+        } catch (error) {
+          reject({ status: error })
+        }
+      })
+    }
   }
 }
 

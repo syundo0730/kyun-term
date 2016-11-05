@@ -7,7 +7,7 @@ import ActionSettings from 'material-ui/svg-icons/action/settings'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import { baudrates } from '../../domain/port-config'
-import { list, open } from '../../actions/action-creators'
+import { list, open, close } from '../../actions/action-creators'
 
 class Settings extends React.Component {
   constructor(props) {
@@ -17,11 +17,14 @@ class Settings extends React.Component {
       portSelect: { value: 0, index: -1 },
       baudrateSelect: { value: 0, index: -1 },
       buttonEnabled: false,
-      buttonLabel: props.isPortOpen ? 'Disconnect' : 'Connect'
+      buttonLabel: ''
     }
     this.handleOpen = () => {
       this.props.dispatch(list())
-      this.setState({ open: true })
+      this.setState({
+        open: true,
+        buttonLabel: this.props.isPortOpen ? 'Disconnect' : 'Connect'
+      })
     }
     this.handleClose = () => {
       this.setState({ open: false })
@@ -39,12 +42,18 @@ class Settings extends React.Component {
       })
     }
     this.handleSubmit = () => {
-      const { ports } = this.props;
-      const comName = ports[this.state.portSelect.index].comName
-      const baudrate = baudrates[this.state.baudrateSelect.index]
-      this.props.dispatch(open(comName, baudrate))
+      const { ports, isPortOpen } = this.props;
+      if (isPortOpen) {
+        this.props.dispatch(close())
+      } else {
+        const comName = ports[this.state.portSelect.index].comName
+        const baudrate = baudrates[this.state.baudrateSelect.index]
+        this.props.dispatch(open(comName, baudrate))
+      }
       this.setState({ open: false })
     }
+  }
+  initialize() {
   }
   render() {
     const actions = [
@@ -55,7 +64,7 @@ class Settings extends React.Component {
         keyboardFocused={true}
         onTouchTap={this.handleSubmit} />
     ]
-    const { ports } = this.props
+    const { ports, isPortOpen } = this.props
     const portList = ports.map((port, index) => (
       <MenuItem value={index + 1} primaryText={port.comName} />
     ))
@@ -64,13 +73,22 @@ class Settings extends React.Component {
     ))
     return (
       <div>
-        <IconButton touch={true} onTouchTap={this.handleOpen}> <ActionSettings />
+        <IconButton touch={true} onTouchTap={this.handleOpen}>
+          <ActionSettings />
         </IconButton>
         <Dialog title='Settings' actions={actions} modal={false} open={this.state.open} onRequestClose={this.handleClose} >
-          <SelectField floatingLabelText='Port' value={this.state.portSelect.value} onChange={this.handlePortChange}>
+          <SelectField
+            floatingLabelText='Port'
+            value={this.state.portSelect.value}
+            onChange={this.handlePortChange}
+            disabled={isPortOpen}>
             {portList}
           </SelectField>
-          <SelectField floatingLabelText='Baudrate' value={this.state.baudrateSelect.value} onChange={this.handleBaudrateChange}>
+          <SelectField
+            floatingLabelText='Baudrate'
+            value={this.state.baudrateSelect.value}
+            onChange={this.handleBaudrateChange}
+            disabled={isPortOpen}>
             {baudrateList}
           </SelectField>
         </Dialog>
