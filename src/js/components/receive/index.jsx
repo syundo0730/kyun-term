@@ -1,15 +1,14 @@
 import React from 'react'
 import TextView from './text-view.jsx'
-import Card from '../common/card.jsx'
+import { Card, CardHeader } from 'material-ui/Card';
 
 export default class Receive extends React.Component {
-  render () {
+  render() {
     return (
-      <div>
-        <Card title='Received Data'>
-				  <TextView />
-        </Card>
-      </div>
+      <Card>
+        <CardHeader title='Received Data' />
+        <TextView />
+      </Card>
     )
   }
 }
