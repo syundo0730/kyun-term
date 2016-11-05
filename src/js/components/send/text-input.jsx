@@ -16,6 +16,7 @@ class TextInput extends React.Component {
     return (
       <div>
         <TextField
+          id="text-field-send-data"
           multiLine={true}
           fullWidth={true}
           value={sendBuffer}

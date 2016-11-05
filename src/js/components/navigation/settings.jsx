@@ -17,7 +17,7 @@ class Settings extends React.Component {
       portSelect: { value: 0, index: -1 },
       baudrateSelect: { value: 0, index: -1 },
       buttonEnabled: false,
-      buttonLabel: ''
+      buttonLabel: 'Connect'
     }
     this.handleOpen = () => {
       this.props.dispatch(list())
@@ -66,10 +66,10 @@ class Settings extends React.Component {
     ]
     const { ports, isPortOpen } = this.props
     const portList = ports.map((port, index) => (
-      <MenuItem value={index + 1} primaryText={port.comName} />
+      <MenuItem value={index + 1} primaryText={port.comName} key={index} />
     ))
     const baudrateList = baudrates.map((rate, index) => (
-      <MenuItem value={index + 1} primaryText={rate} />
+      <MenuItem value={index + 1} primaryText={rate} key={index} />
     ))
     return (
       <div>
