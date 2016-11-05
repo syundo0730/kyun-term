@@ -5,19 +5,19 @@ import thunk from 'redux-thunk'
 import promiseMiddleware from '../../src/js/middlewares/promise-middleware'
 import promiseSequenceMiddleware from '../../src/js/middlewares/promise-sequence-middleware'
 import * as actions from '../../src/js/actions/action-creators'
-import { port } from '../../src/js/actions/action-creators'
+import SerialPort from '../../src/js/serialport'
 import * as types from '../../src/js/constants/action-types'
-import { serialport } from '../../src/js/serialport'
 
 const middlewares = [ thunk, promiseSequenceMiddleware, promiseMiddleware]
 const mockStore = configureMockStore(middlewares)
+const port = new SerialPort()
 
 describe('async actions', () => {
   describe('list', () => {
-    afterEach(() => serialport.list.restore())
+    afterEach(() => SerialPort.list.restore())
 
     it('creates LIST_SUCCESS when listing serial ports has been done', () => {
-      sinon.stub(serialport, 'list', (callback) => callback(null, ['port0']))
+      sinon.stub(SerialPort, 'list', (callback) => callback(null, ['port0']))
       const initialState = {}
       const expectedActions = [
         { type: types.LIST.REQUEST },
@@ -35,7 +35,7 @@ describe('async actions', () => {
     })
 
     it('creates LIST_FAILURE when listing serial ports has failed', () => {
-      sinon.stub(serialport, 'list', (callback) => callback('test error', ['port0']))
+      sinon.stub(SerialPort, 'list', (callback) => callback('test error', ['port0']))
       const initialState = {}
       const expectedActions = [
         { type: types.LIST.REQUEST },
@@ -53,7 +53,7 @@ describe('async actions', () => {
     })
 
     it('creates LIST_FAILURE when no serial ports listed', () => {
-      sinon.stub(serialport, 'list', (callback) => callback(null, null))
+      sinon.stub(SerialPort, 'list', (callback) => callback(null, null))
       const initialState = {}
       const expectedActions = [
         { type: types.LIST.REQUEST },
@@ -71,7 +71,7 @@ describe('async actions', () => {
     })
 
     it('creates LIST_FAILURE when listing serial ports has failed with unknown error', () => {
-      sinon.stub(serialport, 'list', () => { throw new Error('UNKNOWN_ERROR')})
+      sinon.stub(SerialPort, 'list', () => { throw new Error('UNKNOWN_ERROR')})
       const initialState = {}
       const expectedActions = [
         { type: types.LIST.REQUEST },
@@ -86,76 +86,6 @@ describe('async actions', () => {
       store.dispatch(actions.list()).then(() => {
         expect(store.getActions()).toEqual(expectedActions)
       })
-    })
-  })
-
-  describe('open', () => {
-    afterEach(() => {
-      port.open.restore()
-    })
-    after(() => {
-      port.on.restore()
-    })
-
-    it('creates OPEN_PORT_SUCCESS when opening serial ports has been done', () => {
-      sinon.stub(port, 'open', (callback) => callback(null))
-      sinon.stub(port, 'on', (name, callback) => callback('test data'))
-      const initialState = {}
-      const expectedActions = [
-        { type: types.OPEN_PORT.REQUEST },
-        {
-          type: types.OPEN_PORT.SUCCESS,
-          result: {
-            info: {
-              portName: '/dev/cu.usbmodem1412',
-              baudrate: 9800
-            }
-          }
-        },
-        { type: types.READ.REQUEST },
-        {
-          type: types.READ.SUCCESS,
-          result: {
-            receivedData: 'test data'
-          }
-        },
-        {
-          type: types.OPEN_PORT.FAILURE,
-          error: {
-            status: 'disconnected'
-          }
-        },
-        {
-          type: types.OPEN_PORT.FAILURE,
-          error: {
-            status: 'error'
-          }
-        }
-      ]
-      const store = mockStore(initialState)
-      store.dispatch(actions.open('/dev/cu.usbmodem1412', 9800))
-      expect(store.getActions()).toEqual(expectedActions)
-    })
-
-    it('creates OPEN_PORT_FAILURE when opening serial ports has failed', () => {
-      sinon.stub(port, 'open', (callback) => callback('test error'))
-      const initialState = {}
-      const expectedActions = [
-        { type: types.OPEN_PORT.REQUEST },
-        {
-          type: types.OPEN_PORT.FAILURE,
-          error: {
-            status: 'test error',
-            info: {
-              portName: '/dev/cu.usbmodem1412',
-              baudrate: 9800
-            }
-          }
-        }
-      ]
-      const store = mockStore(initialState)
-      store.dispatch(actions.open('/dev/cu.usbmodem1412', 9800))
-      expect(store.getActions()).toEqual(expectedActions)
     })
   })
 

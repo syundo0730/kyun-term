@@ -20,6 +20,7 @@ class Settings extends React.Component {
       buttonLabel: props.isPortOpen ? 'Disconnect' : 'Connect'
     }
     this.handleOpen = () => {
+      this.props.dispatch(list())
       this.setState({ open: true })
     }
     this.handleClose = () => {
@@ -39,12 +40,11 @@ class Settings extends React.Component {
     }
     this.handleSubmit = () => {
       const { ports } = this.props;
-      const comName = ports[this.state.portSelect.index]
+      const comName = ports[this.state.portSelect.index].comName
       const baudrate = baudrates[this.state.baudrateSelect.index]
       this.props.dispatch(open(comName, baudrate))
       this.setState({ open: false })
     }
-    this.props.dispatch(list())
   }
   render() {
     const actions = [

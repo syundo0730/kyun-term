@@ -1,15 +1,17 @@
 import _ from 'lodash'
 
-import { LIST,
+import {
+  LIST,
   OPEN_PORT,
   READ,
   SEND,
   SET_SEND_BUFFER,
-  SET_PORT_CONFIG } from '../constants/action-types'
+  SET_PORT_CONFIG
+} from '../constants/action-types'
 
-import { serialport, windowExists } from '../serialport'
-const SerialPort = serialport.SerialPort
-export var port = windowExists ? null: new SerialPort()
+import SerialPort from '../serialport'
+
+let port = null
 
 export function list() {
   return {
@@ -17,24 +19,20 @@ export function list() {
     promise: () => {
       return new Promise((resolve, reject) => {
         try {
-          serialport.list(function(error, ports) {
-            if (error) {
-              reject({
-                status: error
-              })
-            } else if (ports) {
+          SerialPort.list(function (error, ports) {
+            if (ports) {
               resolve({
                 ports
               })
-            } else {
+            } else if (error) {
               reject({
-                status: 'no ports'
+                status: error
               })
             }
           })
-        } catch(error) {
+        } catch (error) {
           reject({
-            status: 'unknown error'
+            status: error
           })
         }
       })
@@ -43,7 +41,7 @@ export function list() {
 }
 
 export function open(portName, baudrate) {
-  return function(dispatch) {
+  return function (dispatch) {
     let info = {
       portName,
       baudrate
@@ -51,12 +49,9 @@ export function open(portName, baudrate) {
     dispatch({
       type: OPEN_PORT.REQUEST
     })
-    if (windowExists) {
-      port = new SerialPort(portName, {
-        baudrate
-      }, false)
-    }
-    port.open(function(error) {
+    port = new SerialPort(portName, {
+      baudrate
+    }, function (error) {
       if (error) {
         dispatch({
           type: OPEN_PORT.FAILURE,
@@ -78,33 +73,33 @@ export function open(portName, baudrate) {
         /**
          * register on received handler
          */
-        port.on('data', function(data) {
+        port.on('data', function (data) {
           dispatch({
             type: READ.SUCCESS,
             result: {
-              recievedData: data
+              receivedData: data
             }
           })
         })
         /**
          * register on disconnect handler
          */
-        port.on('disconnect', function(data) {
+        port.on('disconnect', function (error) {
           dispatch({
             type: OPEN_PORT.FAILURE,
             error: {
-              status: 'disconnected'
+              status: error
             }
           })
         })
         /**
          * register on error handler
          */
-        port.on('error', function(data) {
+        port.on('error', function (error) {
           dispatch({
             type: OPEN_PORT.FAILURE,
             error: {
-              status: 'error'
+              status: error
             }
           })
         })
@@ -119,27 +114,23 @@ export function send(data) {
     promise: () => {
       return new Promise((resolve, reject) => {
         try {
-          port.write(data, function(error, results) {
+          port.write(data, function (error) {
             if (error) {
               reject({
                 status: error
               })
-            } else if (results) {
+            } else {
               resolve({
                 info: {
-                  length: results,
+                  length: 0,
                   sendData: data
                 }
               })
-            } else {
-              reject({
-                status: 'no data send'
-              })
             }
           })
-        } catch(error) {
+        } catch (error) {
           reject({
-            status: 'unknown error'
+            status: error
           })
         }
       })

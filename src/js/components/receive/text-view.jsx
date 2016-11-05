@@ -5,9 +5,10 @@ import { setSendBuffer } from '../../actions/action-creators'
 class TextView extends React.Component {
   render() {
     const { receivedData } = this.props
+    const stringExpression = receivedData.toString('utf8')
     return (
       <div>
-        {receivedData}
+        {stringExpression}
       </div>
     );
   }

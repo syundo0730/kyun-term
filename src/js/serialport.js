@@ -1,12 +1,12 @@
-const mockSerialPort = {
-  list: () => {},
-  SerialPort: () => {
-  }
+class mockSerialPort {
+  constructor() {}
+  static list() {}
+  open() {}
+  on() {}
+  write() {}
 }
-mockSerialPort.SerialPort.prototype.open = () => {}
-mockSerialPort.SerialPort.prototype.on = () => {}
-mockSerialPort.SerialPort.prototype.write = () => {}
 
-export const windowExists = (typeof window === 'object')
+const windowExists = (typeof window === 'object')
+const SerialPort =  windowExists ? require('electron').remote.require('serialport') : mockSerialPort
 
-export const serialport =  windowExists ? require('electron').remote.require('serialport') : mockSerialPort
+export default SerialPort
