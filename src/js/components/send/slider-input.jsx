@@ -1,48 +1,59 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setSendBuffer } from '../../actions/action-creators'
+import DropDownMenu from 'material-ui/DropDownMenu'
+import MenuItem from 'material-ui/MenuItem'
 import TextSlider from './text-slider.jsx'
-
-const styles = {
-  root: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    height: 65
-  },
-  slider: {
-    width: '50%'
-  },
-  text: {
-    width: 50
-  }
-};
+import * as Types from '../../domain/value-types'
 
 class SliderInput extends React.Component {
   constructor(props) {
     super(props)
+    this.typeEntities = [
+      new Types.String(),
+      new Types.Uint8(),
+      new Types.Int8(),
+      new Types.Uint16(),
+      new Types.Int16(),
+      new Types.Uint32(),
+      new Types.Int32()
+    ]
     this.state = {
-      sliderValueRange: {
-        min: 0,
-        max: 255,
-        step: 1
+      type: {
+        index: 0,
+        value: 1
       },
-      sliderValue: 0,
+      range: this.typeEntities[0].Range,
+      sliderValue: 0
     }
     this.handleSliderChange = (value) => {
-      console.log(value)
+      const asUint8 = this.typeEntities[this.state.type.index].convertToUint8Array(value)
+      this.props.dispatch(setSendBuffer(asUint8))
     }
-    this.handleTextChange = (event, value) => {
-      this.setState({ sliderValue: value });
+    this.handleTypeChange = (event, index, value) => {
+      const range = this.typeEntities[index].Range
+      this.setState({
+        type: {
+          index,
+          value
+        },
+        range
+      })
     }
   }
   render() {
     const { isPortOpen } = this.props
+    const menuItems = [
+      'utf8', 'uint8', 'int8', 'uint16', 'int16', 'uint32', 'int32'
+      ].map((name, i) => (<MenuItem value={i+1} primaryText={name} key={i}/>))
     return (
       <div>
+        <DropDownMenu value={this.state.type.value} onChange={this.handleTypeChange}>
+          {menuItems}
+        </DropDownMenu>
         <TextSlider
           onChange={this.handleSliderChange}
-          valueRange={{ min: 0, max: 255, step: 1 }}/>
+          valueRange={Object.assign(this.state.range, {step: 1})} />
       </div>
     );
   }

@@ -7,8 +7,8 @@ class TextInput extends React.Component {
   constructor(props) {
     super(props)
     this.handleChange = (event) => {
-      const data = event.target.value
-      this.props.dispatch(setSendBuffer(data))
+      const str = event.target.value
+      this.props.dispatch(setSendBuffer(new Buffer(str)))
     }
   }
   render() {
@@ -19,7 +19,7 @@ class TextInput extends React.Component {
           id="text-field-send-data"
           multiLine={true}
           fullWidth={true}
-          value={sendBuffer}
+          value={sendBuffer.toString()}
           disabled={!isPortOpen}
           onChange={this.handleChange} />
       </div>

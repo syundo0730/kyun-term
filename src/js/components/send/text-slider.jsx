@@ -12,10 +12,10 @@ const styles = {
     height: 65
   },
   slider: {
-    width: '50%'
+    width: '70%'
   },
   text: {
-    width: 50
+    width: 100
   }
 };
 
@@ -27,23 +27,27 @@ class TextSlider extends React.Component {
     }
     const { onChange, valueRange } = props
     this.handleSliderChange = (event, value) => {
+      value = this.validateRange(value)
       this.setState({ value });
       onChange(value)
     }
     this.handleTextChange = (event, value) => {
       let integerValue = 0
       if (value) {
-        integerValue = parseInt(value, 10)
-        const { min, max } = valueRange
-        if (integerValue > max) {
-          integerValue = max
-        } else if (integerValue < min) {
-          integerValue = min
-        }
+        integerValue = this.validateRange(parseInt(value, 10))
       }
       this.setState({ value: integerValue });
       onChange(integerValue)
     }
+  }
+  validateRange(value) {
+    const { min, max } = this.props.valueRange
+    if (value > max) {
+      return max
+    } else if (value < min) {
+      return min
+    }
+    return value
   }
   render() {
     const { isPortOpen, valueRange } = this.props
@@ -61,7 +65,7 @@ class TextSlider extends React.Component {
         <TextField
           id="text-field-send-data"
           value={this.state.value}
-          // disabled={!isPortOpen}
+          // disabled={!isPortOpen
           style={styles.text}
           onChange={this.handleTextChange} />
       </div>

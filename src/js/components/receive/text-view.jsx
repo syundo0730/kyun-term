@@ -109,7 +109,7 @@ class TextView extends React.Component {
                 onCheck={this.handleShowSendChange}
                 style={styles.checkbox}/>
               <DropDownMenu value={this.state.type.value} onChange={this.handleTypeChange}>
-                <MenuItem value={1} primaryText="Text" />
+                <MenuItem value={1} primaryText="Utf8" />
                 <MenuItem value={2} primaryText="Hex" />
                 <MenuItem value={3} primaryText="Dec" />
               </DropDownMenu>
