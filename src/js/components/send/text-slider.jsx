@@ -1,6 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { setSendBuffer } from '../../actions/action-creators'
 import Slider from 'material-ui/Slider';
 import TextField from 'material-ui/TextField'
 
@@ -19,7 +17,7 @@ const styles = {
   }
 };
 
-class TextSlider extends React.Component {
+export default class TextSlider extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -50,7 +48,7 @@ class TextSlider extends React.Component {
     return value
   }
   render() {
-    const { isPortOpen, valueRange } = this.props
+    const { disabled, valueRange } = this.props
     return (
       <div style={styles.root}>
         <Slider
@@ -59,23 +57,16 @@ class TextSlider extends React.Component {
           step={valueRange.step}
           defaultValue={0}
           value={this.state.value}
-          // disabled={!isPortOpen}
+          disabled={disabled}
           style={styles.slider}
           onChange={this.handleSliderChange} />
         <TextField
           id="text-field-send-data"
           value={this.state.value}
-          // disabled={!isPortOpen
+          disabled={disabled}
           style={styles.text}
           onChange={this.handleTextChange} />
       </div>
     );
   }
 }
-
-export default connect((state/*, props*/) => {
-  return {
-    sendBuffer: state.serialPortState.send.buffer ? state.serialPortState.send.buffer : '',
-    isPortOpen: !!state.serialPortState.port.info
-  }
-})(TextSlider)

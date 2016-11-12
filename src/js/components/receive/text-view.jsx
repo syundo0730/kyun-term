@@ -79,7 +79,7 @@ class TextView extends React.Component {
           receivedDataText = toIntegerExpression(_log.receivedData)
         }
         if (_log.sendData && showSend) {
-          sendDataText = _log.sendData
+          sendDataText = toIntegerExpression(_log.sendData)
         }
       }
       if (receivedDataText) {

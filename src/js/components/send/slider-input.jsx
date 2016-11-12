@@ -6,6 +6,11 @@ import MenuItem from 'material-ui/MenuItem'
 import TextSlider from './text-slider.jsx'
 import * as Types from '../../domain/value-types'
 
+const styles = {
+  root: {
+    height: 120
+  }
+}
 class SliderInput extends React.Component {
   constructor(props) {
     super(props)
@@ -47,13 +52,17 @@ class SliderInput extends React.Component {
       'utf8', 'uint8', 'int8', 'uint16', 'int16', 'uint32', 'int32'
       ].map((name, i) => (<MenuItem value={i+1} primaryText={name} key={i}/>))
     return (
-      <div>
-        <DropDownMenu value={this.state.type.value} onChange={this.handleTypeChange}>
+      <div style={styles.root}>
+        <DropDownMenu
+        value={this.state.type.value}
+        onChange={this.handleTypeChange}
+        disabled={!isPortOpen}>
           {menuItems}
         </DropDownMenu>
         <TextSlider
           onChange={this.handleSliderChange}
-          valueRange={Object.assign(this.state.range, {step: 1})} />
+          valueRange={Object.assign(this.state.range, {step: 1})}
+          disabled={!isPortOpen} />
       </div>
     );
   }

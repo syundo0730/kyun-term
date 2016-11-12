@@ -3,6 +3,11 @@ import { connect } from 'react-redux'
 import TextField from 'material-ui/TextField'
 import { setSendBuffer } from '../../actions/action-creators'
 
+const styles = {
+  root: {
+    minHeight: 120
+  }
+}
 class TextInput extends React.Component {
   constructor(props) {
     super(props)
@@ -14,7 +19,7 @@ class TextInput extends React.Component {
   render() {
     const { sendBuffer, isPortOpen } = this.props
     return (
-      <div>
+      <div style={styles.root}>
         <TextField
           id="text-field-send-data"
           multiLine={true}
