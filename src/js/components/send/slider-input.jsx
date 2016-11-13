@@ -70,7 +70,6 @@ class SliderInput extends React.Component {
 
 export default connect((state/*, props*/) => {
   return {
-    sendBuffer: state.serialPortState.send.buffer ? state.serialPortState.send.buffer : '',
     isPortOpen: !!state.serialPortState.port.info
   }
 })(SliderInput)

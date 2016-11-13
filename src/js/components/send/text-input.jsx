@@ -34,7 +34,7 @@ class TextInput extends React.Component {
 
 export default connect((state/*, props*/) => {
   return {
-    sendBuffer: state.serialPortState.send.buffer ? state.serialPortState.send.buffer : '',
+    sendBuffer: state.serialPortState.buffer.send ? state.serialPortState.buffer.send : '',
     isPortOpen: !!state.serialPortState.port.info
   }
 })(TextInput)

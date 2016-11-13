@@ -7,7 +7,7 @@ import { LIST,
   SET_PORT_CONFIG } from '../constants/action-types'
 
 var initialSerialPortState = {
-  list: {}, port: {}, send: {}, read: {}, log: []
+  list: {}, port: {}, send: {}, read: {}, log: [], buffer: {}
 }
 export function serialPortState(state = initialSerialPortState, action) {
   console.log('serialPortState reducer called with state ', state , ' and action ', action)
@@ -100,8 +100,8 @@ export function serialPortState(state = initialSerialPortState, action) {
     case SET_SEND_BUFFER:
       return {
         ...state,
-        send: {
-          buffer: action.data
+        buffer: {
+          send: action.data
         }
       }
     case READ.REQUEST:
