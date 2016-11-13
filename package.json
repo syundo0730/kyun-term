@@ -2,7 +2,7 @@
   "name": "kyun-term",
   "version": "1.0.0",
   "description": "",
-  "main": "index.jsx",
+  "main": "main.js",
   "scripts": {
     "postinstall": "./node_modules/.bin/electron-rebuild",
     "test": "mocha --compilers js:babel-core/register --recursive",
@@ -11,8 +11,12 @@
     "build": "NODE_ENV=production browserify --im -t babelify ./src/js/index.jsx | uglifyjs -m > ./dst/bundle.js",
     "start": "./node_modules/.bin/electron ./main.js"
   },
-  "author": "",
+  "author": "Shundo Kishi",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/syundo0730/kyun-term"
+  },
   "devDependencies": {
     "babel-cli": "^6.4.5",
     "babel-eslint": "^7.1.0",
