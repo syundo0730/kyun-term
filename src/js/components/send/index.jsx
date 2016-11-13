@@ -6,10 +6,8 @@ import SliderInput from './slider-input.jsx'
 import { Card, CardHeader } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton'
 import { Tabs, Tab } from 'material-ui/Tabs'
-import ActionFlightTakeoff from 'material-ui/svg-icons/action/flight-takeoff'
 import EditorShortText from 'material-ui/svg-icons/editor/short-text'
 import ImageTune from 'material-ui/svg-icons/image/tune'
-import ContentSend from 'material-ui/svg-icons/content/send'
 
 class Send extends React.Component {
   constructor(props) {

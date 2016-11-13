@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setSendBuffer } from '../../actions/action-creators'
 import { CardActions, CardText } from 'material-ui/Card'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
