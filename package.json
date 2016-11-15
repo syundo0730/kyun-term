@@ -1,5 +1,6 @@
 {
   "name": "kyun-term",
+  "productName": "KyunTerm",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
@@ -7,9 +8,13 @@
     "postinstall": "./node_modules/.bin/electron-rebuild",
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm test -- --watch",
-    "watch": "watchify --im -d -t babelify ./src/js/index.jsx -o ./dst/bundle.js",
-    "build": "NODE_ENV=production browserify --im -t babelify ./src/js/index.jsx | uglifyjs -m > ./dst/bundle.js",
-    "start": "./node_modules/.bin/electron ./main.js"
+    "watch": "watchify --im -d -t babelify ./src/js/index.jsx -o ./release/bundle.js",
+    "build": "NODE_ENV=production browserify --im -t babelify ./src/js/index.jsx | uglifyjs -m > ./release/bundle.js",
+    "start": "./node_modules/.bin/electron ./release/main.js",
+    "package-all": "npm run package-darwin & npm run package-win32 & npm run package-linux",
+    "package-darwin": "./node_modules/.bin/electron-packager . --platform=darwin --arch=all",
+    "package-win32": "./node_modules/.bin/electron-packager . --platform=win32 --arch=all",
+    "package-linux": "./node_modules/.bin/electron-packager . --platform=linux --arch=all"
   },
   "author": "Shundo Kishi",
   "license": "ISC",
@@ -25,7 +30,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "babelify": "^7.2.0",
     "browserify": "^13.0.1",
-    "electron-prebuilt": "1.3.8",
+    "electron-packager": "^8.2.0",
     "electron-rebuild": "^1.3.0",
     "enzyme": "^2.5.1",
     "eslint": "^3.9.0",
@@ -40,6 +45,7 @@
   },
   "dependencies": {
     "bluebird": "^3.1.1",
+    "electron-prebuilt": "^1.4.6",
     "immutable": "^3.7.6",
     "lodash": "^4.0.0",
     "material-ui": "^0.16.1",
