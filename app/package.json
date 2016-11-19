@@ -1,0 +1,21 @@
+{
+  "name": "KyunTerm",
+  "version": "0.0.1",
+  "description": "serial terminal",
+  "main": "main.js",
+  "author": "Shundo Kishi <syundo0730@gmail.com>",
+  "dependencies": {
+    "bluebird": "^3.1.1",
+    "immutable": "^3.7.6",
+    "lodash": "^4.0.0",
+    "material-ui": "^0.16.1",
+    "react": "^15.1.0",
+    "react-d3-components": "^0.6.5",
+    "react-dom": "^15.1.0",
+    "react-redux": "^4.0.5",
+    "react-tap-event-plugin": "^2.0.1",
+    "redux": "^3.0.5",
+    "redux-thunk": "^2.1.0",
+    "serialport": "^4.0.4"
+  }
+}
