@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setSendBuffer } from '../../actions/action-creators'
+import { setSendBuffer, send } from '../../actions/action-creators'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import TextSlider from './text-slider.jsx'
@@ -32,8 +32,12 @@ class SliderInput extends React.Component {
       sliderValue: 0
     }
     this.handleSliderChange = (value) => {
-      const asUint8 = this.typeEntities[this.state.type.index].convertToUint8Array(value)
-      this.props.dispatch(setSendBuffer(asUint8))
+      const sendBuffer = this.typeEntities[this.state.type.index].convertToUint8Array(value)
+      this.props.dispatch(setSendBuffer(sendBuffer))
+      const { sendOnChange } = this.props
+      if (sendOnChange) {
+        this.props.dispatch(send(sendBuffer))
+      }
     }
     this.handleTypeChange = (event, index, value) => {
       const range = this.typeEntities[index].Range

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import TextField from 'material-ui/TextField'
-import { setSendBuffer } from '../../actions/action-creators'
+import { setSendBuffer, send } from '../../actions/action-creators'
 
 const styles = {
   root: {
@@ -13,7 +13,12 @@ class TextInput extends React.Component {
     super(props)
     this.handleChange = (event) => {
       const str = event.target.value
-      this.props.dispatch(setSendBuffer(new Buffer(str)))
+      const sendBuffer = new Buffer(str)
+      this.props.dispatch(setSendBuffer(sendBuffer))
+      const { sendOnChange } = this.props
+      if (sendOnChange) {
+        this.props.dispatch(send(sendBuffer))
+      }
     }
   }
   render() {
