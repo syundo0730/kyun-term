@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "postinstall": "node_modules/.bin/install-app-deps && ./node_modules/.bin/electron-rebuild -w serialport -p",
+    "postinstall": "./node_modules/.bin/install-app-deps && ./node_modules/.bin/electron-rebuild -w serialport -p",
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm test -- --watch",
     "bundle": "browserify --im -t babelify ./src/js/index.jsx | uglifyjs -m > ./app/dst/bundle.js",
