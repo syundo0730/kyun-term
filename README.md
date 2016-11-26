@@ -4,11 +4,7 @@
 KyunTerm is a multifunctional serial terminal application.
 
 # Install
-Latest version 0.0.1 (beta)
-
-[for Mac](https://github.com/syundo0730/kyun-term/releases/download/v0.0.1/KyunTerm-0.0.1.dmg)
-
-[for Windows](https://github.com/syundo0730/kyun-term/releases/download/v0.0.1/KyunTerm.Setup.0.0.1.zip)
+Latest version is available at [here](https://github.com/syundo0730/kyun-term/releases)
 
 # Usage
 ## Setting for serial port
@@ -56,17 +52,10 @@ $ npm run bundle:watch
 $ npm run start
 ```
 ## Build application
-### for Mac
 ```
-$ npm run build:mac
+$ npm run build
 ```
-! Applications for Mac can only be built in Mac environment
-
-### for Windows
-```
-$ npm run build:win
-```
-! Applications for Windows can only be built in Windows environment
+! Applications for Windows/Mac can only be built in Windows/Mac environment
 
 # Contribute
 1. Fork it ( https://github.com/syundo0730/kyun-term )
