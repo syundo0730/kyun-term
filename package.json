@@ -1,7 +1,4 @@
 {
-  "name": "KyunTerm",
-  "version": "0.0.1",
-  "author": "Shundo Kishi <syundo0730@gmail.com>",
   "scripts": {
     "postinstall": "node_modules/.bin/install-app-deps && ./node_modules/.bin/electron-rebuild -w serialport -p",
     "test": "mocha --compilers js:babel-core/register --recursive",
@@ -9,21 +6,15 @@
     "bundle": "browserify --im -t babelify ./src/js/index.jsx | uglifyjs -m > ./app/dst/bundle.js",
     "bundle:watch": "watchify --im -d -t babelify ./src/js/index.jsx -o ./app/dst/bundle.js",
     "start": "./node_modules/.bin/electron ./app/main.js",
-    "build:mac": "build -m --x64 --ia32",
-    "build:win": "build -w --x64 --ia32"
+    "build": "build",
+    "release": "build"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/syundo0730/kyun-term"
   },
   "build": {
-    "appId": "org.syundo.kyunterm",
-    "mac": {
-      "category": "public.app-category.productivity"
-    },
-    "win": {
-      "iconUrl": "http://eatodo.s3.amazonaws.com/icon.ico"
-    }
+    "appId": "com.github.syundo0730.kyun.term"
   },
   "devDependencies": {
     "babel-cli": "^6.4.5",
@@ -46,5 +37,6 @@
     "sinon": "^1.17.2",
     "uglify-js": "^2.6.1",
     "watchify": "^3.6.1"
-  }
+  },
+  "dependencies": {}
 }
