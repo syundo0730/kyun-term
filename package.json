@@ -14,7 +14,10 @@
     "url": "https://github.com/syundo0730/kyun-term"
   },
   "build": {
-    "appId": "com.github.syundo0730.kyun.term"
+    "appId": "com.github.syundo0730.kyun.term",
+    "squirrelWindows": {
+      "iconUrl": "https://github.com/syundo0730/kyun-term/blob/master/build/icon.ico"
+    }
   },
   "devDependencies": {
     "babel-cli": "^6.4.5",
