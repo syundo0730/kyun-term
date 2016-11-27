@@ -1,14 +1,18 @@
 # KyunTerm
-[![Build Status](https://travis-ci.org/syundo0730/kyun-term.svg?branch=master)](https://travis-ci.org/syundo0730/kyun-term)
 
 KyunTerm is a multifunctional serial terminal application.
 
+![overview](https://github.com/syundo0730/kyun-term/wiki/image/overview.png)
+
 # Install
-Latest version is available at [here](https://github.com/syundo0730/kyun-term/releases)
+Available for [Windows 64bit](https://github.com/syundo0730/kyun-term/releases/download/v0.1.0/kyun-term-Setup-0.1.0.exe)
+[Mac](https://github.com/syundo0730/kyun-term/releases/download/v0.1.0/kyun-term-0.1.0.dmg)
 
 # Usage
 ## Setting for serial port
 Select port name and baudrate.
+
+![setting](https://github.com/syundo0730/kyun-term/wiki/image/setting.png)
 
 ## Send data
 ### Send text
@@ -16,11 +20,15 @@ Select port name and baudrate.
 2. Input text which you want to send.
 3. Push send button.
 
+![setting](https://github.com/syundo0730/kyun-term/wiki/image/text-input.png)
+
 ### Send integer value by slider
 1. Select slider input tag.
 2. Move the slider until it reach the value you want to send.
 3. You can select type of value from 'string', 'uint8', 'int8', 'uint16', 'int16', 'uint32', 'int32', which is constituting the character string of UTF 8, 8 bits, 16 bits, 32 bits, with or without sign, respectively.
 4. Push send button.
+
+![slider-input](https://github.com/syundo0730/kyun-term/wiki/image/slider-input.png)
 
 ## View received data
 ### View text
@@ -28,9 +36,13 @@ Select port name and baudrate.
 2. You can observe received data in the form of character string, hexadecimal, decimal number.
 If you want to see the log of transmitted data, click "show send log" button.
 
+![text-view](https://github.com/syundo0730/kyun-term/wiki/image/text-view.png)
+
 ### View graph
 1. Select graph view tag.
 2. You can display character string data in the form of line graph. The delimiter character is set to comma by default, but it is possible to change it. Currently, only character string data is supported. It is not possible to display raw numerical data well.
+
+![graph-view](https://github.com/syundo0730/kyun-term/wiki/image/graph-view.png)
 
 # Develop
 ## setup
