@@ -75,7 +75,7 @@ if (process.platform === 'darwin') {
 
 if (process.platform === 'darwin') {
   const appVersion = require('./package.json').version
-  const feedURL = `https://kyun-term-update-server.herokuapp.com/update//osx/${appVersion}`
+  const feedURL = `https://kyun-term-update-server.herokuapp.com/update/osx/${appVersion}`
   autoUpdater.setFeedURL(feedURL);
 }
 
