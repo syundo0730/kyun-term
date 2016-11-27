@@ -1,7 +1,8 @@
 'use strict'
 if(require('electron-squirrel-startup')) return;
 
-const { app, Menu, BrowserWindow, dialog, autoUpdater } = require('electron')
+const { app, Menu, BrowserWindow, dialog } = require('electron')
+const { autoUpdater } = require('electron-auto-updater')
 
 let mainWindow
 
@@ -72,15 +73,11 @@ if (process.platform === 'darwin') {
   })
 }
 
-const appVersion = require('./package.json').version
-const baseUrl = 'https://kyun-term-update-server.herokuapp.com/update' 
-let feedURL = ''
 if (process.platform === 'darwin') {
-  feedURL = `${baseUrl}/osx/${appVersion}`
-} else if (process.platform === 'win32') {
-  feedURL = `${baseUrl}/win32/${appVersion}`
+  const appVersion = require('./package.json').version
+  const feedURL = `https://kyun-term-update-server.herokuapp.com/update//osx/${appVersion}`
+  autoUpdater.setFeedURL(feedURL);
 }
-autoUpdater.setFeedURL(feedURL);
 
 app.on('window-all-closed', function () {
   if (process.platform != 'darwin') {
