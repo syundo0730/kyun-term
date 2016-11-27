@@ -1,7 +1,7 @@
 {
   "name": "kyun-term",
   "productName": "KyunTerm",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "serial terminal",
   "main": "main.js",
   "author": "Shundo Kishi <syundo0730@gmail.com>",

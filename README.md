@@ -2,8 +2,6 @@
 
 KyunTerm is a multifunctional serial terminal application.
 
-![overview](https://github.com/syundo0730/kyun-term/wiki/image/overview.png)
-
 # Install
 Available for [Windows 64bit](https://github.com/syundo0730/kyun-term/releases/download/v0.1.0/kyun-term-Setup-0.1.0.exe)
 [Mac](https://github.com/syundo0730/kyun-term/releases/download/v0.1.0/kyun-term-0.1.0.dmg)
