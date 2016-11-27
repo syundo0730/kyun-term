@@ -24,15 +24,6 @@ const template = [
       {
         label: 'Learn More',
         click() { require('electron').shell.openExternal('https://github.com/syundo0730/kyun-term') }
-      },
-      {
-        label: 'Toggle Developer Tools',
-        accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-        click (item, focusedWindow) {
-          if (focusedWindow) {
-            focusedWindow.webContents.toggleDevTools()
-          }
-        }
       }
     ]
   }
