@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { CardActions, CardText } from 'material-ui/Card'
 import TextField from 'material-ui/TextField'
@@ -19,7 +20,7 @@ const styles = {
       fontSize: 15
     },
     textField: {
-      width: 30
+      width: 50
     }
   }
 }
@@ -34,7 +35,8 @@ class GraphView extends React.Component {
       data: [],
       lastIndex: 0,
       xScaleRangeMax: 100,
-      xScaleRange: [0, 100]
+      xScaleRange: [0, 100],
+      width: 400
     }
     this.handleClear = () => {
       this.setState({
@@ -57,6 +59,18 @@ class GraphView extends React.Component {
         )
       })
     }
+    this.handleWindowSizeChange = () => {
+      const width = ReactDOM.findDOMNode(this.chartArea).offsetWidth - 100
+      if (width > 0) {
+        this.setState({ width })
+      }
+    }
+  }
+  componentDidMount() {
+    window.addEventListener("resize", this.handleWindowSizeChange)
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleWindowSizeChange)
   }
   componentWillReceiveProps(nextProps) {
     const { receivedData } = this.props
@@ -93,7 +107,7 @@ class GraphView extends React.Component {
     }
   }
   render() {
-    const { data, separator, xScaleRange, xScaleRangeMax } = this.state
+    const { data, separator, xScaleRange, xScaleRangeMax, width } = this.state
     return (
       <div>
         <CardActions>
@@ -118,14 +132,14 @@ class GraphView extends React.Component {
             </ToolbarGroup>
           </Toolbar>
         </CardActions>
-        <CardText>
+        <CardText ref={(chartArea) => { this.chartArea = chartArea }}>
           <LineChart
             data={data.length > 0 ? data : defaultGraphData}
-            width={700}
+            width={width}
             height={400}
             margin={{top: 10, bottom: 50, left: 50, right: 10}}
             xAxis={{innerTickSize: 6, label: 'time'}}
-            xScale={scaleLinear().domain(xScaleRange).range([0, 700])}
+            xScale={scaleLinear().domain(xScaleRange).range([0, width])}
             yAxis={{label: 'val'}}
             shapeColor={'red'} />
         </CardText>
