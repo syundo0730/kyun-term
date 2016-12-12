@@ -11,11 +11,15 @@ import Visibility from 'material-ui/svg-icons/action/visibility'
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off'
 import { LineChart } from 'react-d3-components'
 import RegExpService from '../../domain/regexp-service'
+import { scaleLinear } from 'd3-scale'
 
 const styles = {
   toolbar: {
     title: {
       fontSize: 15
+    },
+    textField: {
+      width: 30
     }
   }
 }
@@ -28,7 +32,9 @@ class GraphView extends React.Component {
     this.state = {
       separator: ',',
       data: [],
-      lastIndex: 0
+      lastIndex: 0,
+      xScaleRangeMax: 100,
+      xScaleRange: [0, 100]
     }
     this.handleClear = () => {
       this.setState({
@@ -38,34 +44,56 @@ class GraphView extends React.Component {
     }
     this.handleSeparatorChange = (event) => {
       this.setState({
-        separator: event.target.value,
-      });
+        separator: event.target.value
+      })
+    }
+    this.handleXScaleRangeChange = (event) => {
+      const xScaleRangeMax = event.target.value
+      this.setState({
+        xScaleRangeMax,
+        xScaleRange: this.calcRange(
+          this.state.lastIndex,
+          xScaleRangeMax
+        )
+      })
     }
   }
   componentWillReceiveProps(nextProps) {
     const { receivedData } = this.props
     const nextReceivedData = nextProps.receivedData
     if (receivedData !== nextReceivedData) {
-      const str = nextReceivedData.toString()
-      const values = RegExpService.splitStringAsFloat(this.state.separator, str)
+      const data = nextReceivedData.toString()
+      const dataArray = RegExpService.splitStringAsFloat(this.state.separator, data)
       this.setState(
-        this.reduceGraphData(this.state, values)
+        this.reduceGraphData(this.state, dataArray)
       )
     }
   }
-  reduceGraphData(state, receivedDataArray) {
-    const data = receivedDataArray.map((val, i) => {
-      return {
-        label: `lavel_${i}`,
-        values: [
-          ...(state.data[i] ? state.data[i].values : []),
-          { x: state.lastIndex + 1, y: val }
-          ]
-      }
-    })
-    return { data: data, lastIndex: this.state.lastIndex + 1 }
+  reduceGraphData(state, dataArray) {
+    const { data, lastIndex, xScaleRangeMax } = state
+    const newIndex = lastIndex + 1
+    const newData = dataArray.map((val, i) => ({
+      label: `lavel_${i}`,
+      values: [
+        ...(data[i] ? data[i].values : []),
+        { x: newIndex, y: val }
+      ]
+    }))
+    return {
+      data: newData,
+      lastIndex: newIndex,
+      xScaleRange: this.calcRange(newIndex, xScaleRangeMax)
+    }
+  }
+  calcRange(lastIndex, xScaleRangeMax) {
+    if (0 <= lastIndex && lastIndex <= xScaleRangeMax) {
+      return [0, xScaleRangeMax]
+    } else {
+      return [lastIndex - xScaleRangeMax, lastIndex]
+    }
   }
   render() {
+    const { data, separator, xScaleRange, xScaleRangeMax } = this.state
     return (
       <div>
         <CardActions>
@@ -76,22 +104,30 @@ class GraphView extends React.Component {
                 onTouchTap={this.handleClear} />
               <ToolbarTitle text='Separator' style={styles.toolbar.title}/>
               <TextField
-                id='text-field-service'
+                id='separator-text-field'
                 hintText='Strings used for data separator'
-                value={this.state.separator}
-                onChange={this.handleSeparatorChange} />
+                value={separator}
+                onChange={this.handleSeparatorChange}
+                style={styles.toolbar.textField} />
+              <ToolbarTitle text='Buffer Size' style={styles.toolbar.title}/>
+              <TextField
+                id='x-scale-range-text-field'
+                value={xScaleRangeMax}
+                onChange={this.handleXScaleRangeChange}
+                style={styles.toolbar.textField} />
             </ToolbarGroup>
           </Toolbar>
         </CardActions>
         <CardText>
           <LineChart
-            data={this.state.data.length > 0 ? this.state.data : defaultGraphData}
+            data={data.length > 0 ? data : defaultGraphData}
             width={700}
             height={400}
             margin={{top: 10, bottom: 50, left: 50, right: 10}}
-            xAxis={{innerTickSize: 6, label: "time"}}
-            yAxis={{label: "val"}}
-            shapeColor={"red"} />
+            xAxis={{innerTickSize: 6, label: 'time'}}
+            xScale={scaleLinear().domain(xScaleRange).range([0, 700])}
+            yAxis={{label: 'val'}}
+            shapeColor={'red'} />
         </CardText>
       </div>
     );
