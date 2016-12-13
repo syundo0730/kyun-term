@@ -11,8 +11,6 @@ var initialSerialPortState = {
   list: {}, port: {}, send: {}, read: {}, log: [], buffer: {}
 }
 export function serialPortState(state = initialSerialPortState, action) {
-  console.log('serialPortState reducer called with state ', state , ' and action ', action)
-
   switch (action.type) {
     case LIST.REQUEST:
       return {

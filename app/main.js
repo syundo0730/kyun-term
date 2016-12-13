@@ -76,15 +76,32 @@ app.on('window-all-closed', function () {
   }
 })
 
+let forceQuit = false
 app.on('ready', function () {
-  const menu = Menu.buildFromTemplate(template);
+  const menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 
   mainWindow = new BrowserWindow({ width: 800, height: 600, title: 'KyunTerm' })
   mainWindow.loadURL('file://' + __dirname + '/index.html')
 
-  mainWindow.on('closed', function () {
+
+  mainWindow.on('close', function (e) {
+    if (!forceQuit) {
+      e.preventDefault()
+      mainWindow.hide()
+    }
+  })
+
+  app.on('before-quit', function (e) {
+    forceQuit = true
+  })
+
+  app.on('will-quit', function (e) {
     mainWindow = null
+  })
+
+  app.on('activate', function () {
+    mainWindow.show()
   })
 
   mainWindow.webContents.on('did-frame-finish-load', function () {
