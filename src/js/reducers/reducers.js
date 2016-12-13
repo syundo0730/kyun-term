@@ -3,6 +3,7 @@ import { LIST,
   CLOSE_PORT,
   READ,
   SEND,
+  CLEAR_LOG,
   SET_SEND_BUFFER,
   SET_PORT_CONFIG } from '../constants/action-types'
 
@@ -130,6 +131,11 @@ export function serialPortState(state = initialSerialPortState, action) {
           frozen: false,
           status: action.error.status
         }
+      }
+    case CLEAR_LOG:
+      return {
+        ...state,
+        log: []
       }
     default:
       return state

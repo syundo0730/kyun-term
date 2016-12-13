@@ -28,6 +28,8 @@ export const SEND = {
   FAILURE : 'SEND_FAILURE'
 }
 
+export const CLEAR_LOG = 'CLEAR_LOG'
+
 export const SET_SEND_BUFFER = 'SET_SEND_BUFFER'
 
 export const SET_PORT_CONFIG = 'SET_PORT_CONFIG'

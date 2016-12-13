@@ -41,7 +41,8 @@ class GraphView extends React.Component {
     this.handleClear = () => {
       this.setState({
         data: [],
-        lastIndex: 0
+        lastIndex: 0,
+        xScaleRange: [0, this.state.xScaleRangeMax]
       })
     }
     this.handleSeparatorChange = (event) => {

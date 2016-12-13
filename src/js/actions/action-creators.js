@@ -6,6 +6,7 @@ import {
   CLOSE_PORT,
   READ,
   SEND,
+  CLEAR_LOG,
   SET_SEND_BUFFER,
   SET_PORT_CONFIG
 } from '../constants/action-types'
@@ -157,6 +158,12 @@ export function send(data) {
         }
       })
     }
+  }
+}
+
+export function clearLog() {
+  return {
+    type: CLEAR_LOG
   }
 }
 

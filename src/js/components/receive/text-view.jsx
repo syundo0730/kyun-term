@@ -4,9 +4,11 @@ import { CardActions, CardText } from 'material-ui/Card'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import { Toolbar, ToolbarGroup, ToolbarSeparator } from 'material-ui/Toolbar'
+import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox'
 import Visibility from 'material-ui/svg-icons/action/visibility'
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off'
+import { clearLog } from '../../actions/action-creators'
 
 const LOG_BUFFER_SIZE = 1000
 const styles = {
@@ -45,6 +47,9 @@ class TextView extends React.Component {
       this.setState({
         showSend: isInputChecked
       })
+    }
+    this.handleClear = () => {
+      this.props.dispatch(clearLog())
     }
   }
   getLogText() {
@@ -100,6 +105,9 @@ class TextView extends React.Component {
         <CardActions>
           <Toolbar style={styles.toolbar}>
             <ToolbarGroup firstChild={true}>
+              <FlatButton
+                label='Clear'
+                onTouchTap={this.handleClear} />
               <Checkbox
                 checkedIcon={<Visibility />}
                 uncheckedIcon={<VisibilityOff />}
