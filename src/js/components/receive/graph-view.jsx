@@ -60,7 +60,7 @@ class GraphView extends React.Component {
       })
     }
     this.handleWindowSizeChange = () => {
-      const width = ReactDOM.findDOMNode(this.chartArea).offsetWidth - 100
+      const width = ReactDOM.findDOMNode(this.chartArea).offsetWidth - 50
       if (width > 0) {
         this.setState({ width })
       }
@@ -139,7 +139,7 @@ class GraphView extends React.Component {
             height={400}
             margin={{top: 10, bottom: 50, left: 50, right: 10}}
             xAxis={{innerTickSize: 6, label: 'time'}}
-            xScale={scaleLinear().domain(xScaleRange).range([0, width])}
+            xScale={scaleLinear().domain(xScaleRange).range([0, width-100])}
             yAxis={{label: 'val'}}
             shapeColor={'red'} />
         </CardText>
