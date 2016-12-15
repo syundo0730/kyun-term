@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "postinstall": "./node_modules/.bin/install-app-deps && ./node_modules/.bin/electron-rebuild -w serialport -p",
     "test": "mocha --compilers js:babel-core/register --recursive",
@@ -31,7 +31,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "babelify": "^7.2.0",
     "browserify": "^13.0.1",
-    "electron-builder": "^10.7.0",
+    "electron-builder": "^8.6.0",
     "electron-prebuilt": "^1.4.6",
     "electron-rebuild": "^1.3.0",
     "enzyme": "^2.5.1",

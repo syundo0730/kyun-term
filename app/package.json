@@ -1,14 +1,14 @@
 {
   "name": "kyun-term",
   "productName": "KyunTerm",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "serial terminal",
   "main": "main.js",
   "author": "Shundo Kishi <syundo0730@gmail.com>",
   "dependencies": {
     "bluebird": "^3.1.1",
     "d3": "^4.4.0",
-    "electron-auto-updater": "^0.7.1",
+    "electron-auto-updater": "^0.6.0",
     "electron-squirrel-startup": "^1.0.0",
     "immutable": "^3.7.6",
     "lodash": "^4.0.0",
